@@ -12,12 +12,19 @@ import {
   Sparkles,
   Lock
 } from "lucide-react";
-import { PORTFOLIO_DATA, ProjectItem } from "@/data/portfolio";
+import { PORTFOLIO_DATA, getLocalizedContent } from "@/data/portfolio";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function PortfolioShowcase() {
   const [activeTab, setActiveTab] = useState<"projects" | "stack">("projects");
-  const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const { lang } = useLanguage();
+  const t = getLocalizedContent(lang);
+
+  const selectedProject = selectedProjectId
+    ? t.portfolio.projects.find((p) => p.id === selectedProjectId) ?? null
+    : null;
 
   const projectGallery = selectedProject
     ? selectedProject.gallery && selectedProject.gallery.length > 0
@@ -34,10 +41,10 @@ export default function PortfolioShowcase() {
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-10">
           <h2 className="text-3xl sm:text-5xl font-black text-zinc-900 dark:text-white tracking-tight uppercase">
-            Portfolio Showcase
+            {t.portfolio.heading}
           </h2>
           <p className="mt-3 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 font-mono">
-            Explore my journey through real-world projects and technical expertise.
+            {t.portfolio.subheading}
           </p>
 
           {/* Navigation Pill Switcher */}
@@ -45,7 +52,7 @@ export default function PortfolioShowcase() {
             <button
               onClick={() => {
                 setActiveTab("projects");
-                setSelectedProject(null);
+                setSelectedProjectId(null);
               }}
               className={`px-5 py-2 rounded-full text-xs font-semibold transition-all cursor-pointer ${
                 activeTab === "projects"
@@ -53,12 +60,12 @@ export default function PortfolioShowcase() {
                   : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
               }`}
             >
-              Projects
+              {t.portfolio.tabProjects}
             </button>
             <button
               onClick={() => {
                 setActiveTab("stack");
-                setSelectedProject(null);
+                setSelectedProjectId(null);
               }}
               className={`px-5 py-2 rounded-full text-xs font-semibold transition-all cursor-pointer ${
                 activeTab === "stack"
@@ -66,7 +73,7 @@ export default function PortfolioShowcase() {
                   : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
               }`}
             >
-              Tech Stack
+              {t.portfolio.tabStack}
             </button>
           </div>
         </div>
@@ -79,18 +86,18 @@ export default function PortfolioShowcase() {
                 
                 {/* Back Button */}
                 <button
-                  onClick={() => setSelectedProject(null)}
+                  onClick={() => setSelectedProjectId(null)}
                   className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs font-mono text-zinc-700 dark:text-zinc-300 hover:text-zinc-950 dark:hover:text-white transition-colors mb-8 cursor-pointer"
                 >
                   <ArrowLeft className="w-4 h-4" />
-                  Back to Projects
+                  {t.portfolio.backToProjects}
                 </button>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                   
                   {/* Left Column: Preview Image + Details */}
                   <div className="lg:col-span-7 space-y-6">
-                    {/* Dashboard Visual Preview & Gallery (only shown when real screenshot exists) */}
+                    {/* Dashboard Visual Preview & Gallery */}
                     {projectGallery.length > 0 && (
                       <div className="space-y-3">
                         <div className="relative aspect-video w-full rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-lg">
@@ -107,7 +114,7 @@ export default function PortfolioShowcase() {
                             </span>
                             <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-black/75 backdrop-blur-md border border-white/10 text-[10px] font-mono text-emerald-300 shrink-0">
                               <Lock className="w-3 h-3" />
-                              Real Documentation
+                              {t.portfolio.realDocBadge}
                             </span>
                           </div>
                         </div>
@@ -162,7 +169,7 @@ export default function PortfolioShowcase() {
                           {selectedProject.techCount}
                         </div>
                         <div className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mt-1 uppercase">
-                          Technologies Used
+                          {t.portfolio.techUsedLabel}
                         </div>
                       </div>
 
@@ -171,7 +178,7 @@ export default function PortfolioShowcase() {
                           {selectedProject.contributions.length}
                         </div>
                         <div className="text-[10px] font-mono text-zinc-500 dark:text-zinc-400 mt-1 uppercase">
-                          Contributions
+                          {t.portfolio.contributionsCountLabel}
                         </div>
                       </div>
 
@@ -191,7 +198,7 @@ export default function PortfolioShowcase() {
                           </span>
                         )}
                         <span className="text-[10px] font-mono text-zinc-500 mt-0.5">
-                          Deployment
+                          {t.portfolio.deploymentLabel}
                         </span>
                       </div>
                     </div>
@@ -199,7 +206,7 @@ export default function PortfolioShowcase() {
                     {/* Technologies Used Badges */}
                     <div className="space-y-2 pt-2">
                       <span className="text-xs font-mono font-semibold text-zinc-500 dark:text-zinc-400 uppercase">
-                        Technologies Used
+                        {t.portfolio.techUsedLabel}
                       </span>
                       <div className="flex flex-wrap gap-2">
                         {selectedProject.technologies.map((tech) => (
@@ -220,7 +227,7 @@ export default function PortfolioShowcase() {
                     <div className="p-6 rounded-2xl bg-purple-50/70 dark:bg-purple-950/15 border border-purple-200/80 dark:border-purple-500/30 space-y-4">
                       <h4 className="text-sm font-mono uppercase tracking-wider font-bold text-purple-900 dark:text-purple-200 flex items-center gap-2">
                         <Sparkles className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-                        Kontribusi Saya
+                        {t.portfolio.contributionsTitle}
                       </h4>
                       <ul className="space-y-3">
                         {selectedProject.contributions.map((item, cIdx) => (
@@ -236,7 +243,7 @@ export default function PortfolioShowcase() {
                     <div className="p-6 rounded-2xl bg-zinc-50 dark:bg-zinc-950/80 border border-zinc-200 dark:border-zinc-800 space-y-4">
                       <h4 className="text-sm font-mono uppercase tracking-wider font-bold text-zinc-900 dark:text-white flex items-center gap-2">
                         <Cpu className="w-4 h-4 text-teal-600 dark:text-teal-400" />
-                        Key Features
+                        {t.portfolio.keyFeaturesTitle}
                       </h4>
                       <ul className="space-y-3">
                         {selectedProject.keyFeatures.map((feat, fIdx) => (
@@ -254,13 +261,12 @@ export default function PortfolioShowcase() {
             ) : (
               /* Projects Centered Grid List */
               <div className="flex flex-wrap justify-center gap-6">
-                {PORTFOLIO_DATA.projects.map((project) => (
+                {t.portfolio.projects.map((project) => (
                   <div
                     key={project.id}
                     className="w-full md:w-[calc(50%-0.75rem)] group rounded-3xl bg-white/90 dark:bg-[#0d0d11] border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all overflow-hidden flex flex-col justify-between shadow-sm dark:shadow-none"
                   >
                     <div>
-                      {/* Thumbnail: Real screenshot if available, clean tech header otherwise */}
                       <div className="relative aspect-video w-full bg-zinc-100 dark:bg-zinc-900 overflow-hidden">
                         {project.image ? (
                           <Image
@@ -295,7 +301,6 @@ export default function PortfolioShowcase() {
                         </div>
                       </div>
 
-                      {/* Content */}
                       <div className="p-6">
                         <h3 className="text-xl font-bold text-zinc-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-300 transition-colors">
                           {project.title}
@@ -309,21 +314,20 @@ export default function PortfolioShowcase() {
                       </div>
                     </div>
 
-                    {/* Footer with Details button */}
                     <div className="p-6 pt-4 flex items-center justify-between border-t border-zinc-200/80 dark:border-zinc-800/60 mt-2">
                       <span className="inline-flex items-center gap-1.5 text-[11px] font-mono text-zinc-500">
                         <Lock className="w-3 h-3 text-amber-500/80" />
-                        Enterprise / NDA • {project.contributions.length} Contributions
+                        Enterprise / NDA • {project.contributions.length} {t.portfolio.contributionsSuffix}
                       </span>
 
                       <button
                         onClick={() => {
-                          setSelectedProject(project);
+                          setSelectedProjectId(project.id);
                           setActiveImageIndex(0);
                         }}
                         className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-700/80 text-xs font-semibold text-zinc-900 dark:text-white transition-all cursor-pointer"
                       >
-                        Details →
+                        {t.portfolio.detailsBtn}
                       </button>
                     </div>
                   </div>
@@ -341,7 +345,6 @@ export default function PortfolioShowcase() {
                 key={idx}
                 className="w-[calc(50%-0.5rem)] sm:w-[calc(33.333%-0.67rem)] md:w-[calc(25%-0.75rem)] p-5 rounded-2xl bg-white/90 dark:bg-[#0d0d11] border border-zinc-200 dark:border-zinc-800/80 hover:border-zinc-300 dark:hover:border-zinc-700 transition-all flex flex-col items-center justify-center text-center group hover:-translate-y-1 shadow-sm dark:shadow-none"
               >
-                {/* Tech Icon Square */}
                 <div
                   className="w-14 h-14 rounded-2xl flex items-center justify-center mb-3 shadow-md dark:shadow-lg border border-zinc-200/80 dark:border-white/10 group-hover:scale-105 transition-transform"
                   style={{ backgroundColor: `${tech.color === "#ffffff" ? "#71717a" : tech.color}18` }}

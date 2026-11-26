@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import { ArrowDown } from "lucide-react";
-import { PORTFOLIO_DATA } from "@/data/portfolio";
+import { PORTFOLIO_DATA, getLocalizedContent } from "@/data/portfolio";
+import { useLanguage } from "@/context/LanguageContext";
 import InteractiveLanyard from "@/components/InteractiveLanyard";
 
 export default function Hero() {
@@ -11,6 +11,8 @@ export default function Hero() {
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const roles = PORTFOLIO_DATA.personal.rotatingRoles;
+  const { lang } = useLanguage();
+  const t = getLocalizedContent(lang);
 
   // Typewriter effect
   useEffect(() => {
@@ -52,14 +54,14 @@ export default function Hero() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
               </span>
-              <span>{PORTFOLIO_DATA.personal.status}</span>
+              <span>{t.hero.status}</span>
             </div>
 
             {/* Giant Title */}
             <div>
               <h1 className="text-4xl sm:text-6xl font-black text-zinc-900 dark:text-white tracking-tight leading-[1.08] uppercase">
-                Odoo & Python <br />
-                <span className="text-zinc-500 dark:text-zinc-400">Developer</span>
+                {t.hero.titleLine1} <br />
+                <span className="text-zinc-500 dark:text-zinc-400">{t.hero.titleLine2}</span>
               </h1>
             </div>
 
@@ -72,12 +74,12 @@ export default function Hero() {
 
             {/* Bio summary */}
             <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 max-w-xl leading-relaxed">
-              {PORTFOLIO_DATA.personal.bioShort}
+              {t.hero.bioShort}
             </p>
 
             {/* Tech Badges */}
             <div className="flex flex-wrap gap-2 pt-1">
-              {["Python", "Odoo ERP", "PostgreSQL", "Tailwind"].map((tech) => (
+              {["Python", "Odoo ERP", "PostgreSQL", "QWeb PDF"].map((tech) => (
                 <span
                   key={tech}
                   className="px-3 py-1 rounded-md bg-white/90 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs font-mono text-zinc-700 dark:text-zinc-300 shadow-sm dark:shadow-none"
@@ -90,18 +92,25 @@ export default function Hero() {
             {/* Bullet Links */}
             <div className="space-y-2 pt-2 text-xs sm:text-sm font-mono text-zinc-600 dark:text-zinc-400">
               <a
+                href="#services"
+                className="flex items-center gap-2 hover:text-zinc-950 dark:hover:text-white transition-colors group"
+              >
+                <span className="text-emerald-600 dark:text-emerald-400 group-hover:translate-x-1 transition-transform">→</span>
+                <span>{t.hero.exploreServices}</span>
+              </a>
+              <a
                 href="#portfolio"
                 className="flex items-center gap-2 hover:text-zinc-950 dark:hover:text-white transition-colors group"
               >
                 <span className="text-purple-600 dark:text-purple-400 group-hover:translate-x-1 transition-transform">→</span>
-                <span>explore my work below</span>
+                <span>{t.hero.exploreWork}</span>
               </a>
               <a
                 href="#contact"
                 className="flex items-center gap-2 hover:text-zinc-950 dark:hover:text-white transition-colors group"
               >
                 <span className="text-teal-600 dark:text-teal-400 group-hover:translate-x-1 transition-transform">→</span>
-                <span>open to full-time & freelance opportunities</span>
+                <span>{t.hero.openToOpportunities}</span>
               </a>
             </div>
 

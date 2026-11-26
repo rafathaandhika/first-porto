@@ -13,10 +13,13 @@ import {
   ExternalLink, 
   Download 
 } from "lucide-react";
-import { PORTFOLIO_DATA } from "@/data/portfolio";
+import { PORTFOLIO_DATA, getLocalizedContent } from "@/data/portfolio";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function AboutSection() {
   const [isCvOpen, setIsCvOpen] = useState(false);
+  const { lang } = useLanguage();
+  const t = getLocalizedContent(lang);
 
   // Close modal on ESC key
   useEffect(() => {
@@ -44,7 +47,7 @@ export default function AboutSection() {
           {/* Left Column: Text & Biography */}
           <div className="lg:col-span-7 space-y-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700/60 text-zinc-600 dark:text-zinc-400 text-xs font-mono uppercase tracking-wider shadow-sm dark:shadow-none">
-              ABOUT ME
+              {t.about.badge}
             </div>
 
             <h2 className="text-3xl sm:text-5xl font-black text-zinc-900 dark:text-white tracking-tight uppercase">
@@ -52,33 +55,32 @@ export default function AboutSection() {
             </h2>
 
             <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-300 leading-relaxed">
-              {PORTFOLIO_DATA.personal.bioAbout}
+              {t.about.bioAbout}
             </p>
 
             {/* Quote Card */}
             <div className="p-4 rounded-xl bg-white/80 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 text-xs sm:text-sm text-zinc-700 dark:text-zinc-300 italic font-mono flex items-center gap-3 shadow-sm dark:shadow-none">
               <span className="text-xl text-purple-600 dark:text-purple-400 font-serif leading-none">&ldquo;</span>
-              <span>{PORTFOLIO_DATA.personal.quote}</span>
+              <span>{t.about.quote}</span>
               <span className="text-xl text-purple-600 dark:text-purple-400 font-serif leading-none">&rdquo;</span>
             </div>
 
             {/* Action Buttons */}
             <div className="flex flex-wrap items-center gap-4 pt-2">
-              {/* Preview CV Button */}
               <button
                 type="button"
                 onClick={() => setIsCvOpen(true)}
                 className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-black font-semibold text-xs sm:text-sm hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors shadow-lg cursor-pointer group"
               >
                 <Eye className="w-4 h-4 group-hover:scale-110 transition-transform" />
-                Preview CV
+                {t.about.previewCv}
               </button>
 
               <a
                 href="#portfolio"
                 className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-white font-medium text-xs sm:text-sm transition-colors shadow-sm dark:shadow-none"
               >
-                View Projects
+                {t.about.viewProjects}
                 <ArrowRight className="w-4 h-4" />
               </a>
             </div>
@@ -87,11 +89,9 @@ export default function AboutSection() {
           {/* Right Column: Circular Framed Avatar */}
           <div className="lg:col-span-5 flex justify-center">
             <div className="relative">
-              {/* Outer Glowing Rings */}
               <div className="absolute -inset-3 rounded-full bg-gradient-to-tr from-purple-500/25 via-teal-400/20 to-transparent dark:from-purple-600/30 dark:via-teal-500/20 dark:to-transparent blur-xl" />
               
               <div className="relative w-64 h-64 sm:w-72 sm:h-72 rounded-full p-2 bg-gradient-to-b from-zinc-200 via-white to-zinc-100 dark:from-zinc-700 dark:via-zinc-900 dark:to-black border border-zinc-300 dark:border-zinc-700/80 shadow-2xl flex items-center justify-center">
-                {/* Inner Image circle */}
                 <div className="w-full h-full rounded-full bg-zinc-100 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 overflow-hidden relative group">
                   <Image
                     src="/profile.jpg"
@@ -113,10 +113,10 @@ export default function AboutSection() {
           <div className="p-6 rounded-2xl bg-white/80 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors flex items-center justify-between shadow-sm dark:shadow-none">
             <div>
               <div className="text-3xl font-black text-zinc-900 dark:text-white font-mono">
-                {PORTFOLIO_DATA.stats[0].number}
+                {t.about.stats[0].number}
               </div>
               <div className="text-xs text-zinc-500 dark:text-zinc-400 font-mono uppercase mt-1">
-                {PORTFOLIO_DATA.stats[0].label}
+                {t.about.stats[0].label}
               </div>
             </div>
             <FolderGit2 className="w-8 h-8 text-purple-600/80 dark:text-purple-400/80" />
@@ -125,10 +125,10 @@ export default function AboutSection() {
           <div className="p-6 rounded-2xl bg-white/80 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors flex items-center justify-between shadow-sm dark:shadow-none">
             <div>
               <div className="text-3xl font-black text-zinc-900 dark:text-white font-mono">
-                {PORTFOLIO_DATA.stats[1].number}
+                {t.about.stats[1].number}
               </div>
               <div className="text-xs text-zinc-500 dark:text-zinc-400 font-mono uppercase mt-1">
-                {PORTFOLIO_DATA.stats[1].label}
+                {t.about.stats[1].label}
               </div>
             </div>
             <Award className="w-8 h-8 text-teal-600/80 dark:text-teal-400/80" />
@@ -137,10 +137,10 @@ export default function AboutSection() {
           <div className="p-6 rounded-2xl bg-white/80 dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors flex items-center justify-between shadow-sm dark:shadow-none">
             <div>
               <div className="text-3xl font-black text-zinc-900 dark:text-white font-mono">
-                {PORTFOLIO_DATA.stats[2].number}
+                {t.about.stats[2].number}
               </div>
               <div className="text-xs text-zinc-500 dark:text-zinc-400 font-mono uppercase mt-1">
-                {PORTFOLIO_DATA.stats[2].label}
+                {t.about.stats[2].label}
               </div>
             </div>
             <CheckCircle2 className="w-8 h-8 text-emerald-600/80 dark:text-emerald-400/80" />
@@ -167,7 +167,7 @@ export default function AboutSection() {
                 </div>
                 <div>
                   <h3 className="text-sm sm:text-base font-bold text-zinc-900 dark:text-white tracking-tight">
-                    Curriculum Vitae Preview
+                    {t.about.cvModalTitle}
                   </h3>
                   <p className="text-[11px] text-zinc-500 dark:text-zinc-400 font-mono hidden sm:block">
                     {PORTFOLIO_DATA.personal.name}
@@ -182,27 +182,27 @@ export default function AboutSection() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-200/80 dark:bg-zinc-900 hover:bg-zinc-300/80 dark:hover:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-xs text-zinc-800 dark:text-zinc-200 font-medium transition-colors"
-                  title="Buka langsung di tab baru"
+                  title={t.about.openNewTab}
                 >
                   <ExternalLink className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Buka di Tab Baru</span>
+                  <span className="hidden sm:inline">{t.about.openNewTab}</span>
                 </a>
 
                 <a
                   href="/cv.pdf"
                   download="CV_Muhammad_Rafatha_Andhika.pdf"
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-900 dark:bg-white hover:bg-zinc-800 dark:hover:bg-zinc-200 text-white dark:text-black text-xs font-semibold transition-colors shadow-sm"
-                  title="Unduh File PDF"
+                  title={t.about.downloadPdf}
                 >
                   <Download className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Download</span>
+                  <span className="hidden sm:inline">{t.about.downloadPdf}</span>
                 </a>
 
                 <button
                   type="button"
                   onClick={() => setIsCvOpen(false)}
                   className="p-1.5 rounded-lg text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-200/70 dark:hover:bg-zinc-800 transition-colors ml-1 cursor-pointer"
-                  aria-label="Tutup Preview"
+                  aria-label="Close Preview"
                 >
                   <X className="w-5 h-5" />
                 </button>

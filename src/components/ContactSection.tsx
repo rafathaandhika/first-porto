@@ -8,9 +8,11 @@ import {
   Pin, 
   Loader2,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  MessageCircle
 } from "lucide-react";
-import { PORTFOLIO_DATA } from "@/data/portfolio";
+import { PORTFOLIO_DATA, getLocalizedContent } from "@/data/portfolio";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface Comment {
   id: string;
@@ -51,6 +53,9 @@ function InstagramIcon(props: React.SVGProps<SVGSVGElement>) {
 }
 
 export default function ContactSection() {
+  const { lang } = useLanguage();
+  const t = getLocalizedContent(lang);
+
   // Direct Message Form State
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -58,7 +63,7 @@ export default function ContactSection() {
   const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
   const [statusMessage, setStatusMessage] = useState("");
 
-  // Guestbook Comments State (with LocalStorage)
+  // Guestbook Comments State
   const defaultComments: Comment[] = [
     {
       id: "pin-1",
@@ -89,6 +94,10 @@ export default function ContactSection() {
   const [commentText, setCommentText] = useState("");
   const [isPostingComment, setIsPostingComment] = useState(false);
   const [commentNotice, setCommentNotice] = useState<string>("");
+
+  const whatsappUrl = `https://wa.me/${PORTFOLIO_DATA.personal.whatsapp}?text=${encodeURIComponent(
+    t.contact.whatsappPrefill
+  )}`;
 
   // Load shared comments from backend API
   useEffect(() => {
@@ -133,7 +142,7 @@ export default function ContactSection() {
       };
 
       if (!res.ok) {
-        throw new Error(data.error || "Gagal mengirim komentar.");
+        throw new Error(data.error || "Failed to post comment.");
       }
 
       if (Array.isArray(data.comments)) {
@@ -144,12 +153,10 @@ export default function ContactSection() {
       setCommentText("");
 
       if (data.persistent === false) {
-        setCommentNotice(
-          "Database cloud (Upstash Redis) belum terhubung di Vercel, sehingga komentar belum tersimpan permanen lintas perangkat."
-        );
+        setCommentNotice(t.contact.redisNotice);
       }
     } catch {
-      setCommentNotice("Gagal mengirim komentar. Silakan coba lagi.");
+      setCommentNotice(t.contact.commentError);
     } finally {
       setIsPostingComment(false);
     }
@@ -208,18 +215,16 @@ export default function ContactSection() {
       const data = await response.json();
       if (response.ok && (data.success === "true" || data.success === true)) {
         setStatus("success");
-        setStatusMessage("Pesan berhasil terkirim! Terima kasih sudah menghubungi saya.");
+        setStatusMessage(t.contact.successMsg);
         setName("");
         setEmail("");
         setMessage("");
       } else {
-        throw new Error(data.message || "Gagal mengirim pesan.");
+        throw new Error(data.message || "Send failed.");
       }
     } catch {
       setStatus("error");
-      setStatusMessage(
-        "Gagal mengirim pesan. Silakan coba lagi atau hubungi langsung via email."
-      );
+      setStatusMessage(t.contact.errorMsg);
     }
   };
 
@@ -230,24 +235,24 @@ export default function ContactSection() {
         {/* Section Header */}
         <div className="text-center max-w-xl mx-auto mb-16">
           <h2 className="text-3xl sm:text-5xl font-black text-zinc-900 dark:text-white tracking-tight uppercase">
-            Contact Me
+            {t.contact.heading}
           </h2>
           <p className="mt-3 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 font-mono">
-            Have something in mind? Send a message and let&apos;s connect.
+            {t.contact.subheading}
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           
-          {/* ================= LEFT COLUMN: HUBUNGI SAYA ================= */}
-          <div className="lg:col-span-6 space-y-8">
-            <div className="p-6 sm:p-8 rounded-3xl bg-white/90 dark:bg-[#0d0d11] border border-zinc-200 dark:border-zinc-800 space-y-6 shadow-sm dark:shadow-none">
+          {/* ================= LEFT COLUMN: CONTACT FORM + WHATSAPP + SOCIALS ================= */}
+          <div className="lg:col-span-6 space-y-6">
+            <div className="p-6 sm:p-8 rounded-3xl bg-white/90 dark:bg-[#0d0d11] border border-zinc-200 dark:border-zinc-800 space-y-5 shadow-sm dark:shadow-none">
               <div>
                 <h3 className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">
-                  Hubungi Saya
+                  {t.contact.formTitle}
                 </h3>
                 <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1 font-mono">
-                  Feel free to reach out if you want to collaborate, discuss ideas, or simply say hello.
+                  {t.contact.formSubtitle}
                 </p>
               </div>
 
@@ -256,7 +261,7 @@ export default function ContactSection() {
                   <input
                     type="text"
                     required
-                    placeholder="Your Name"
+                    placeholder={t.contact.namePlaceholder}
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs sm:text-sm text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-purple-500 transition-colors"
@@ -267,7 +272,7 @@ export default function ContactSection() {
                   <input
                     type="email"
                     required
-                    placeholder="Your Email"
+                    placeholder={t.contact.emailPlaceholder}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs sm:text-sm text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-purple-500 transition-colors"
@@ -278,30 +283,43 @@ export default function ContactSection() {
                   <textarea
                     rows={4}
                     required
-                    placeholder="Your Message"
+                    placeholder={t.contact.messagePlaceholder}
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs sm:text-sm text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-purple-500 transition-colors resize-none"
                   />
                 </div>
 
-                <button
-                  type="submit"
-                  disabled={status === "sending"}
-                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-black font-semibold text-xs sm:text-sm hover:bg-zinc-800 dark:hover:bg-zinc-200 disabled:opacity-60 disabled:cursor-not-allowed transition-colors cursor-pointer"
-                >
-                  {status === "sending" ? (
-                    <>
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-4 h-4" />
-                      Send Message
-                    </>
-                  )}
-                </button>
+                <div className="space-y-2.5">
+                  <button
+                    type="submit"
+                    disabled={status === "sending"}
+                    className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-black font-semibold text-xs sm:text-sm hover:bg-zinc-800 dark:hover:bg-zinc-200 disabled:opacity-60 disabled:cursor-not-allowed transition-colors cursor-pointer"
+                  >
+                    {status === "sending" ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        {t.contact.sendingBtn}
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4" />
+                        {t.contact.sendBtn}
+                      </>
+                    )}
+                  </button>
+
+                  {/* Direct WhatsApp CTA Button */}
+                  <a
+                    href={whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs sm:text-sm transition-colors shadow-md shadow-emerald-600/20"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                    {t.contact.whatsappBtn}
+                  </a>
+                </div>
 
                 {status === "success" && (
                   <div className="flex items-start gap-2.5 p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-500/30 text-xs text-emerald-700 dark:text-emerald-300">
@@ -319,11 +337,36 @@ export default function ContactSection() {
               </form>
             </div>
 
-            {/* Connect With Me (Social Cards as in video at 00:47) */}
+            {/* Connect With Me */}
             <div className="space-y-3">
               <span className="text-xs font-mono uppercase text-zinc-500 dark:text-zinc-400 font-semibold block">
-                Connect With Me
+                {t.contact.connectTitle}
               </span>
+
+              {/* Highlighted WhatsApp Card */}
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3.5 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/20 border border-emerald-200 dark:border-emerald-500/30 hover:border-emerald-400 dark:hover:border-emerald-400/60 flex items-center justify-between gap-3 transition-colors group shadow-sm dark:shadow-none"
+              >
+                <div className="flex items-center gap-3 overflow-hidden">
+                  <div className="p-2 rounded-lg bg-emerald-600 text-white shrink-0">
+                    <MessageCircle className="w-4 h-4" />
+                  </div>
+                  <div className="overflow-hidden">
+                    <span className="text-xs font-bold text-zinc-900 dark:text-white block">
+                      WhatsApp ({PORTFOLIO_DATA.personal.whatsappDisplay})
+                    </span>
+                    <span className="text-[10px] text-emerald-700 dark:text-emerald-300 font-mono truncate block">
+                      {t.contact.whatsappCardSub}
+                    </span>
+                  </div>
+                </div>
+                <span className="text-xs font-mono text-emerald-700 dark:text-emerald-300 group-hover:translate-x-1 transition-transform shrink-0">
+                  →
+                </span>
+              </a>
               
               <div className="grid grid-cols-2 gap-3">
                 <a
@@ -403,10 +446,10 @@ export default function ContactSection() {
             <div className="p-6 sm:p-8 rounded-3xl bg-white/90 dark:bg-[#0d0d11] border border-zinc-200 dark:border-zinc-800 space-y-4 shadow-sm dark:shadow-none">
               <div>
                 <h3 className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">
-                  Comments
+                  {t.contact.commentsTitle}
                 </h3>
                 <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1 font-mono">
-                  Leave your thoughts here.
+                  {t.contact.commentsSubtitle}
                 </p>
               </div>
 
@@ -414,7 +457,7 @@ export default function ContactSection() {
                 <input
                   type="text"
                   required
-                  placeholder="Your Name"
+                  placeholder={t.contact.commentNamePlaceholder}
                   value={commentName}
                   onChange={(e) => setCommentName(e.target.value)}
                   className="w-full px-4 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs sm:text-sm text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-teal-500 transition-colors"
@@ -423,7 +466,7 @@ export default function ContactSection() {
                 <textarea
                   rows={2}
                   required
-                  placeholder="Your Comment"
+                  placeholder={t.contact.commentTextPlaceholder}
                   value={commentText}
                   onChange={(e) => setCommentText(e.target.value)}
                   className="w-full px-4 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs sm:text-sm text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-teal-500 transition-colors resize-none"
@@ -441,18 +484,18 @@ export default function ContactSection() {
                     {isPostingComment ? (
                       <>
                         <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                        Posting...
+                        {t.contact.postingBtn}
                       </>
                     ) : (
-                      "Post Comment"
+                      t.contact.postBtn
                     )}
                   </button>
                 </div>
               </form>
             </div>
 
-            {/* Comment Feed Stream (as seen in video at 00:44) */}
-            <div className="space-y-3 max-h-[420px] overflow-y-auto pr-1">
+            {/* Comment Feed Stream */}
+            <div className="space-y-3 max-h-[460px] overflow-y-auto pr-1">
               {comments.map((comm) => (
                 <div
                   key={comm.id}

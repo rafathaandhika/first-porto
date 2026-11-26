@@ -4,11 +4,14 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, useMotionValue, useSpring, useTransform, animate } from "framer-motion";
 import { Hand } from "lucide-react";
-import { PORTFOLIO_DATA } from "@/data/portfolio";
+import { PORTFOLIO_DATA, getLocalizedContent } from "@/data/portfolio";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function InteractiveLanyard() {
   const [isDragging, setIsDragging] = useState(false);
   const [hasInteracted, setHasInteracted] = useState(false);
+  const { lang } = useLanguage();
+  const t = getLocalizedContent(lang);
 
   // Motion values for smooth drag and spring physics
   const rawX = useMotionValue(0);
@@ -134,7 +137,7 @@ export default function InteractiveLanyard() {
           <div className="absolute -top-12 left-1/2 -translate-x-1/2 z-40 pointer-events-none whitespace-nowrap">
             <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-100/90 dark:bg-purple-500/20 border border-purple-300 dark:border-purple-500/40 text-purple-700 dark:text-purple-300 text-[11px] font-mono font-semibold shadow-lg animate-bounce">
               <Hand className="w-3.5 h-3.5 animate-pulse" />
-              Tarik / Geser Saya!
+              {t.hero.dragHint}
             </span>
           </div>
         )}
