@@ -6,10 +6,9 @@ import {
   Send, 
   Heart, 
   Pin, 
-  MessageSquare, 
-  Check, 
-  Copy,
-  ExternalLink
+  Loader2,
+  CheckCircle2,
+  AlertCircle
 } from "lucide-react";
 import { PORTFOLIO_DATA } from "@/data/portfolio";
 
@@ -56,7 +55,8 @@ export default function ContactSection() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  const [sentMessage, setSentMessage] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [statusMessage, setStatusMessage] = useState("");
 
   // Guestbook Comments State (with LocalStorage)
   const defaultComments: Comment[] = [
@@ -127,15 +127,50 @@ export default function ContactSection() {
     localStorage.setItem("guestbook_comments", JSON.stringify(updated));
   };
 
-  const handleSendEmail = (e: React.FormEvent) => {
+  const handleSendEmail = async (e: React.FormEvent) => {
     e.preventDefault();
-    const mailto = `mailto:${PORTFOLIO_DATA.personal.email}?subject=Project Inquiry from ${encodeURIComponent(
-      name
-    )}&body=${encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
-    )}`;
-    window.location.href = mailto;
-    setSentMessage(true);
+    if (!name.trim() || !email.trim() || !message.trim()) return;
+
+    setStatus("sending");
+    setStatusMessage("");
+
+    try {
+      const response = await fetch(
+        `https://formsubmit.co/ajax/${PORTFOLIO_DATA.personal.email}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            name: name.trim(),
+            email: email.trim(),
+            message: message.trim(),
+            _subject: `Pesan Portofolio dari ${name.trim()}`,
+            _replyto: email.trim(),
+            _template: "table",
+            _captcha: "false",
+          }),
+        }
+      );
+
+      const data = await response.json();
+      if (response.ok && (data.success === "true" || data.success === true)) {
+        setStatus("success");
+        setStatusMessage("Pesan berhasil terkirim! Terima kasih sudah menghubungi saya.");
+        setName("");
+        setEmail("");
+        setMessage("");
+      } else {
+        throw new Error(data.message || "Gagal mengirim pesan.");
+      }
+    } catch {
+      setStatus("error");
+      setStatusMessage(
+        "Gagal mengirim pesan. Silakan coba lagi atau hubungi langsung via email."
+      );
+    }
   };
 
   return (
@@ -202,11 +237,35 @@ export default function ContactSection() {
 
                 <button
                   type="submit"
-                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-black font-semibold text-xs sm:text-sm hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors cursor-pointer"
+                  disabled={status === "sending"}
+                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-black font-semibold text-xs sm:text-sm hover:bg-zinc-800 dark:hover:bg-zinc-200 disabled:opacity-60 disabled:cursor-not-allowed transition-colors cursor-pointer"
                 >
-                  <Send className="w-4 h-4" />
-                  {sentMessage ? "Opening Email..." : "Send Message"}
+                  {status === "sending" ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="w-4 h-4" />
+                      Send Message
+                    </>
+                  )}
                 </button>
+
+                {status === "success" && (
+                  <div className="flex items-start gap-2.5 p-3.5 rounded-xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-500/30 text-xs text-emerald-700 dark:text-emerald-300">
+                    <CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" />
+                    <span>{statusMessage}</span>
+                  </div>
+                )}
+
+                {status === "error" && (
+                  <div className="flex items-start gap-2.5 p-3.5 rounded-xl bg-rose-50 dark:bg-rose-950/30 border border-rose-200 dark:border-rose-500/30 text-xs text-rose-700 dark:text-rose-300">
+                    <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                    <span>{statusMessage}</span>
+                  </div>
+                )}
               </form>
             </div>
 
