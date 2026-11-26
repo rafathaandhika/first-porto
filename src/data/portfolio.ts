@@ -1,9 +1,15 @@
+export interface ProjectGalleryItem {
+  src: string;
+  caption: string;
+}
+
 export interface ProjectItem {
   id: string;
   title: string;
   subtitle: string;
   category: string;
   description: string;
+  contributions: string[];
   techCount: number;
   featuresCount: number;
   liveLink?: string;
@@ -11,6 +17,7 @@ export interface ProjectItem {
   technologies: string[];
   keyFeatures: string[];
   image: string;
+  gallery?: ProjectGalleryItem[];
 }
 
 export interface CertificateItem {
@@ -48,8 +55,8 @@ export const PORTFOLIO_DATA = {
       "Turning complex business logic into clean, robust, and automated digital systems.",
     location: "Indonesia",
     status: "AVAILABLE FOR WORK",
-    photoUrl: "/profile.jpg", // Tempat meletakkan foto Rafatha
-    cvLink: "/cv.pdf", // Link CV Rafatha
+    photoUrl: "/profile.jpg",
+    cvLink: "/cv.pdf",
     email: "rafatha.andikha123@gmail.com",
     github: "https://github.com/rafathaandhika",
     linkedin: "https://www.linkedin.com/in/rafatha-andhika-5a2843316/",
@@ -57,95 +64,162 @@ export const PORTFOLIO_DATA = {
   },
 
   stats: [
-    { number: "4+", label: "Projects" },
-    { number: "2+", label: "Certificates" },
+    { number: "5+", label: "Projects" },
+    { number: "v16–v18", label: "Odoo Versions" },
     { number: "100%", label: "Completed Works" },
   ],
 
   projects: [
     {
-      id: "it-inventory",
-      title: "Enterprise IT Asset & Inventory",
-      subtitle: "Modul Odoo Kustom untuk Manajemen Siklus Hidup Aset IT",
-      category: "Asset Management",
+      id: "klinik-senyum-ceria",
+      title: "Klinik Senyum Ceria — Dental Clinic ERP",
+      subtitle: "Sistem Manajemen Klinik Gigi & Rekam Medis Digital (Odoo 16+)",
+      category: "Healthcare ERP",
       description:
-        "Sistem pelacakan inventaris perangkat keras dan lisensi perangkat lunak perusahaan di Odoo. Dilengkapi pemindaian barcode, alert jadwal maintenance otomatis, dan pencatatan riwayat peminjaman aset oleh karyawan.",
+        "Suite modul Odoo ERP kustom untuk mendigitalisasi operasional klinik gigi—mencakup reservasi janji temu, jadwal dokter real-time, resep & template tindakan gigi digital, notifikasi pengingat otomatis, serta integrasi inventaris dan penagihan.",
+      contributions: [
+        "Membangun fitur Prescriptions Template pada menu konfigurasi dan mengotomatiskan pengisian data treatment di modul resep dokter gigi berdasarkan template yang dipilih.",
+        "Menambahkan pengaturan Reminder Time dan sistem notifikasi otomatis untuk jadwal janji temu pasien langsung ke activity feed Odoo.",
+        "Mengoptimalkan kolom Booking Time menjadi input waktu yang presisi serta mengatur kolom time shift dan departemen dokter sebagai read-only.",
+        "Menambahkan opsi kategori kontak 'Other' dengan validasi email opsional serta memperbaiki bug deteksi duplikasi saat penambahan user.",
+      ],
       techCount: 5,
-      featuresCount: 5,
+      featuresCount: 4,
       liveLink: "",
-      githubLink: "https://github.com/rafathaandhika",
-      technologies: ["Python", "Odoo ORM", "PostgreSQL", "XML Views", "QWeb"],
+      githubLink: "",
+      technologies: ["Python", "Odoo 16+ ORM", "PostgreSQL", "XML Views", "Docker"],
       keyFeatures: [
-        "Pelacakan spesifikasi hardware & nomor seri aset",
-        "Alokasi lisensi software dan notifikasi masa kedaluwarsa",
-        "Workflow peminjaman & pengembalian aset karyawan",
-        "Tiket maintenance otomatis saat status perangkat abnormal",
-        "Cetak label aset stiker QR-Code via template QWeb",
+        "Manajemen antrean, booking jadwal & ketersediaan dokter real-time",
+        "Template resep & tindakan perawatan gigi otomatis",
+        "Reminder janji temu otomatis terintegrasi ke activity feed",
+        "Kontrol kontak, user access, dan integrasi billing klinik",
       ],
-      image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80",
+      image: "/projects/klinik-dashboard.jpg",
+      gallery: [
+        { src: "/projects/klinik-dashboard.jpg", caption: "Dashboard Antrian & Appointment Dokter" },
+        { src: "/projects/klinik-prescription.png", caption: "Form Dental Record & Prescriptions" },
+        { src: "/projects/klinik-apps.jpg", caption: "Launcher Modul ERP Klinik" },
+      ],
     },
     {
-      id: "hospital-system",
-      title: "Healthcare Clinic & Patient Workflow",
-      subtitle: "Sistem Informasi Manajemen Klinik & Antrean Pasien",
-      category: "Healthcare HIS",
+      id: "simpada-malang",
+      title: "SIMPADA Regional Tax Reporting (Malang)",
+      subtitle: "Sistem Pelaporan & Dokumen Perpajakan Daerah (Odoo 17)",
+      category: "GovTech & Tax ERP",
       description:
-        "Modul Odoo terintegrasi untuk registrasi pasien, jadwal praktek dokter, rekam medis elektronik (EMR), dan pembuatan faktur tagihan otomatis ke modul akuntansi Odoo.",
-      techCount: 4,
-      featuresCount: 5,
-      liveLink: "",
-      githubLink: "https://github.com/rafathaandhika",
-      technologies: ["Python", "Odoo Accounting", "PostgreSQL", "XML-RPC"],
-      keyFeatures: [
-        "Master data pasien dengan riwayat alergi dan rekam medis",
-        "Penjadwalan janji temu dokter dengan tampilan kalender",
-        "Wizard input resep obat & diagnosis konsultasi cepat",
-        "Pembuatan tagihan faktur otomatis ke Odoo Invoicing",
-        "Hak akses keamanan ketat per grup pengguna (Dokter vs Kasir)",
+        "Platform ERP perpajakan daerah berbasis Odoo 17 untuk pengelolaan pelaporan pajak daerah (SPTPD), penerbitan kode billing, pemantauan transaksi e-tax, serta pencetakan dokumen formulir perpajakan resmi berbasis QWeb.",
+      contributions: [
+        "Memperbarui format cetak PDF SPTPD Pajak Hotel dan SPTPD Pajak Restoran menggunakan template QWeb agar sesuai dengan standar formulir fisik terbaru.",
+        "Merevisi tata letak tabel rincian kamar full-row, perataan elemen formulir, serta mekanisme tabel fallback pada laporan PDF.",
+        "Menyesuaikan format teks NPWPD dan proporsi kode billing pada dokumen cetak agar lebih rapi, jelas, dan konsisten.",
       ],
-      image: "https://images.unsplash.com/photo-1516549655169-df83a0774514?auto=format&fit=crop&w=800&q=80",
+      techCount: 5,
+      featuresCount: 4,
+      liveLink: "",
+      githubLink: "",
+      technologies: ["Python", "Odoo 17", "QWeb PDF", "PostgreSQL", "XML"],
+      keyFeatures: [
+        "Pelaporan SPTPD Pajak Hotel, Pajak Restoran & sektor pajak daerah",
+        "Pencetakan dokumen resmi QWeb PDF dengan layout presisi",
+        "Dukungan informasi e-tax dan generasi kode billing pembayaran",
+        "Pengelolaan data wajib pajak & hak akses pelaporan terstruktur",
+      ],
+      image: "/projects/malang-pdl.jpg",
+      gallery: [
+        { src: "/projects/malang-pdl.jpg", caption: "Dashboard Realisasi Pajak Daerah Lainnya (PDL)" },
+        { src: "/projects/malang-bphtb.png", caption: "Dashboard Pengajuan & Analitik BPHTB" },
+        { src: "/projects/malang-wp.png", caption: "Form Registrasi Data Wajib Pajak" },
+      ],
     },
     {
-      id: "regional-tax",
-      title: "Automated Regional Tax Engine",
-      subtitle: "Mesin Perhitungan & Kepatuhan Pajak Daerah",
-      category: "Finance & Tax",
+      id: "simpada-tabalong",
+      title: "SIMPADA Tax Revision & Security (Tabalong)",
+      subtitle: "Modul Permohonan Perubahan Data & Keamanan Ketetapan (Odoo 17)",
+      category: "GovTech & Security",
       description:
-        "Engine komputasi pajak berbasis Python & Odoo yang memproses kategori pajak daerah, validasi formula berjenjang, perhitungan denda otomatis, dan penerbitan laporan ketetapan pajak resmi.",
-      techCount: 4,
-      featuresCount: 5,
-      liveLink: "",
-      githubLink: "https://github.com/rafathaandhika",
-      technologies: ["Python", "Odoo ORM", "PostgreSQL", "QWeb Reports"],
-      keyFeatures: [
-        "Konfigurasi formula tarif berjenjang yang dinamis",
-        "Algoritma perhitungan denda otomatis atas keterlambatan bayar",
-        "Audit trail histori perubahan formula dan log penilaian",
-        "Generator Surat Ketetapan Pajak (SKP) format PDF resmi",
-        "Wizard pemrosesan batch data transaksi massal",
+        "Sistem informasi pendapatan daerah berbasis Odoo 17 yang menangani siklus pelaporan pajak, permohonan perubahan data wajib pajak, koreksi ketetapan lebih/kurang bayar, serta kontrol keamanan berbasis peran pengguna.",
+      contributions: [
+        "Mengembangkan fitur deteksi otomatis rincian perubahan data (diff tracking) pada modul permohonan ubah data ketetapan pajak.",
+        "Menstandarkan format masa pajak ke MM/YYYY serta menyempurnakan tampilan rincian perbandingan form revisi.",
+        "Menerapkan pembatasan hak akses (security ACL) pada fitur perbaikan Lebih Bayar & Kurang Bayar serta mengunci kolom tanggal dan masa pajak khusus untuk Staff & Admin.",
       ],
-      image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=800&q=80",
+      techCount: 5,
+      featuresCount: 4,
+      liveLink: "",
+      githubLink: "",
+      technologies: ["Python", "Odoo 17", "Odoo Security ACL", "PostgreSQL", "XML"],
+      keyFeatures: [
+        "Deteksi otomatis diff perubahan data sebelum & sesudah revisi",
+        "Workflow perbaikan ketetapan Lebih Bayar & Kurang Bayar",
+        "Pembatasan hak akses sensitif khusus Staff dan Administrator",
+        "Terintegrasi dengan modul retribusi daerah & kanal pembayaran",
+      ],
+      image: "/projects/tabalong-dashboard.png",
+      gallery: [
+        { src: "/projects/tabalong-dashboard.png", caption: "Dashboard Target Realisasi Pajak Daerah" },
+        { src: "/projects/tabalong-objek.png", caption: "Form Detail Objek Pajak & Geolocation" },
+        { src: "/projects/tabalong-laporan.png", caption: "Wizard Export Laporan Wajib Pajak (Excel)" },
+      ],
     },
     {
-      id: "library-system",
-      title: "Digital Library & Circulation System",
-      subtitle: "Sistem Manajemen Peminjaman Buku & Keanggotaan",
-      category: "Catalog Management",
+      id: "simpada-malteng",
+      title: "SIMPADA Revenue, Objection & Opsen (Malteng)",
+      subtitle: "Sistem Penerimaan Daerah, Keberatan Pajak & Dashboard Opsen (Odoo 18)",
+      category: "GovTech & Analytics",
       description:
-        "Modul katalogisasi buku dengan barcode, batas kuota peminjaman anggota, dan otomatisasi hitung denda harian menggunakan scheduled action (cron) Odoo.",
-      techCount: 4,
-      featuresCount: 5,
-      liveLink: "",
-      githubLink: "https://github.com/rafathaandhika",
-      technologies: ["Python", "Odoo ORM", "Barcode", "Cron Jobs"],
-      keyFeatures: [
-        "Katalogisasi nomor ISBN dan barcode salinan fisik buku",
-        "Manajemen kuota anggota berdasarkan tingkatan member",
-        "Sirkulasi checkout & check-in instan dengan barcode scanner",
-        "Cron job harian untuk otomatisasi perhitungan denda keterlambatan",
-        "Cetak kartu anggota dengan barcode ID unik",
+        "Sistem ERP pendapatan daerah di Odoo 18 yang mencakup pengelolaan pajak, retribusi, target opsen, pengajuan keberatan & pembatalan ketetapan pajak, hingga pelaporan realisasi keuangan daerah dalam format PDF dan Excel.",
+      contributions: [
+        "Mengembangkan workflow Keberatan Pajak untuk sektor PBJT, Mineral, Walet, Reklame, & Air Tanah (termasuk keberatan SKPDKB/SKPDKBT, multi-select objek keberatan, penomoran SK otomatis, & kontrol approval Bidang Keberatan).",
+        "Membangun fitur Pembatalan Ketetapan Pajak (SPTPD/SKPD, SKPDKB, SKPDKBT, SKPDLB) beserta smart button terintegrasi.",
+        "Mengintegrasikan Target Opsen ke Target Pajak serta menyusun dashboard & laporan Rekapitulasi Penerimaan Pajak, Retribusi, Lain-lain PAD yang Sah, Buku Pembantu, dan export Excel/PDF Daftar Reklame.",
+        "Membuat modul keamanan hide_error_traceback untuk menyembunyikan detail traceback error dari pengguna non-admin.",
       ],
-      image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=800&q=80",
+      techCount: 5,
+      featuresCount: 4,
+      liveLink: "",
+      githubLink: "",
+      technologies: ["Python", "Odoo 18", "QWeb & XLSX", "PostgreSQL", "RBAC Security"],
+      keyFeatures: [
+        "Workflow keberatan & pembatalan ketetapan pajak multi-level",
+        "Dashboard target & realisasi pajak, retribusi, opsen, dan PAD lain",
+        "Export laporan penerimaan & daftar reklame ke PDF dan Excel",
+        "Proteksi error traceback untuk meningkatkan keamanan aplikasi",
+      ],
+      image: "/projects/malteng-retribusi.jpg",
+      gallery: [
+        { src: "/projects/malteng-retribusi.jpg", caption: "Dashboard Retribusi & Lain-lain PAD yang Sah" },
+        { src: "/projects/malteng-pajak.jpg", caption: "Dashboard Target Realisasi Pajak Daerah" },
+        { src: "/projects/malteng-wp.png", caption: "Form Registrasi Wajib Pajak (Pribadi / Badan Usaha / Bendahara)" },
+      ],
+    },
+    {
+      id: "jai-engineering",
+      title: "Manufacturing E-Kanban & Engineering (JAI)",
+      subtitle: "Sistem Produksi E-Kanban, Loading Shift & Rework Manufaktur (Odoo 18)",
+      category: "Manufacturing ERP",
+      description:
+        "Suite modul Odoo 18 untuk digitalisasi proses produksi manufaktur komponen otomotif—meliputi penjadwalan loading per shift, generasi kartu E-Kanban berbasis QR, verifikasi jalur produksi, serta pelacakan kualitas & rework.",
+      contributions: [
+        "Menambahkan defensive fallback untuk workbook_variant dan mekanisme auto-assign pada master data modul E-Kanban.",
+        "Mengoptimalkan proses kanban loading (load_masters) dengan pembatasan sampel sirkuit, nilai default quantity, serta pembersihan otomatis baris bernilai nol saat verifikasi.",
+        "Memperbaiki struktur penulisan XML views (tag arch) untuk mencegah TypeError saat parsing view di Odoo 18.",
+      ],
+      techCount: 5,
+      featuresCount: 4,
+      liveLink: "",
+      githubLink: "",
+      technologies: ["Python", "Odoo 18", "XML Views", "PostgreSQL", "Manufacturing"],
+      keyFeatures: [
+        "Manajemen loading produksi per tanggal, shift & cut-off",
+        "Generasi kartu E-Kanban dengan kode QR & penomoran otomatis",
+        "Verifikasi loading, pembersihan data nol & validasi master varian",
+        "Pelacakan rework, defect pareto & analitik kapasitas produksi",
+      ],
+      image: "/projects/jai-kanban-real.jpg",
+      gallery: [
+        { src: "/projects/jai-kanban-real.jpg", caption: "Daftar Kartu Kanban & Status Produksi" },
+        { src: "/projects/jai-denmei-real.jpg", caption: "Modul Denmei Engineering & Rekap Part/Material" },
+      ],
     },
   ],
 
@@ -171,12 +245,10 @@ export const PORTFOLIO_DATA = {
     { name: "Odoo ERP", category: "Framework", color: "#714B67", icon: "odoo" },
     { name: "PostgreSQL", category: "Database", color: "#336791", icon: "postgres" },
     { name: "TypeScript", category: "Language", color: "#3178C6", icon: "ts" },
-    { name: "React.js", category: "Framework", color: "#61DAFB", icon: "react" },
     { name: "Next.js", category: "Framework", color: "#ffffff", icon: "next" },
     { name: "Tailwind CSS", category: "Tool", color: "#38B2AC", icon: "tailwind" },
     { name: "XML & QWeb", category: "Language", color: "#E44D26", icon: "xml" },
     { name: "Git & GitHub", category: "Tool", color: "#F05032", icon: "git" },
-    { name: "Linux / Ubuntu", category: "Tool", color: "#FCC624", icon: "linux" },
     { name: "REST API", category: "Tool", color: "#10B981", icon: "api" },
   ],
 };
