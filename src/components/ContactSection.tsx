@@ -139,15 +139,15 @@ export default function ContactSection() {
   };
 
   return (
-    <section id="contact" className="py-24 relative border-t border-zinc-800/60">
+    <section id="contact" className="py-24 relative border-t border-zinc-200/80 dark:border-zinc-800/60">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
         <div className="text-center max-w-xl mx-auto mb-16">
-          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight uppercase">
+          <h2 className="text-3xl sm:text-5xl font-black text-zinc-900 dark:text-white tracking-tight uppercase">
             Contact Me
           </h2>
-          <p className="mt-3 text-xs sm:text-sm text-zinc-400 font-mono">
+          <p className="mt-3 text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 font-mono">
             Have something in mind? Send a message and let&apos;s connect.
           </p>
         </div>
@@ -156,12 +156,12 @@ export default function ContactSection() {
           
           {/* ================= LEFT COLUMN: HUBUNGI SAYA ================= */}
           <div className="lg:col-span-6 space-y-8">
-            <div className="p-6 sm:p-8 rounded-3xl bg-[#0d0d11] border border-zinc-800 space-y-6">
+            <div className="p-6 sm:p-8 rounded-3xl bg-white/90 dark:bg-[#0d0d11] border border-zinc-200 dark:border-zinc-800 space-y-6 shadow-sm dark:shadow-none">
               <div>
-                <h3 className="text-xl font-bold text-white tracking-tight">
+                <h3 className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">
                   Hubungi Saya
                 </h3>
-                <p className="text-xs text-zinc-400 mt-1 font-mono">
+                <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1 font-mono">
                   Feel free to reach out if you want to collaborate, discuss ideas, or simply say hello.
                 </p>
               </div>
@@ -174,7 +174,7 @@ export default function ContactSection() {
                     placeholder="Your Name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl bg-zinc-950 border border-zinc-800 text-xs sm:text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-purple-500 transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs sm:text-sm text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-purple-500 transition-colors"
                   />
                 </div>
 
@@ -185,7 +185,7 @@ export default function ContactSection() {
                     placeholder="Your Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl bg-zinc-950 border border-zinc-800 text-xs sm:text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-purple-500 transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs sm:text-sm text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-purple-500 transition-colors"
                   />
                 </div>
 
@@ -196,13 +196,13 @@ export default function ContactSection() {
                     placeholder="Your Message"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl bg-zinc-950 border border-zinc-800 text-xs sm:text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-purple-500 transition-colors resize-none"
+                    className="w-full px-4 py-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs sm:text-sm text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-purple-500 transition-colors resize-none"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-white text-black font-semibold text-xs sm:text-sm hover:bg-zinc-200 transition-colors"
+                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-black font-semibold text-xs sm:text-sm hover:bg-zinc-800 dark:hover:bg-zinc-200 transition-colors cursor-pointer"
                 >
                   <Send className="w-4 h-4" />
                   {sentMessage ? "Opening Email..." : "Send Message"}
@@ -212,7 +212,7 @@ export default function ContactSection() {
 
             {/* Connect With Me (Social Cards as in video at 00:47) */}
             <div className="space-y-3">
-              <span className="text-xs font-mono uppercase text-zinc-400 font-semibold block">
+              <span className="text-xs font-mono uppercase text-zinc-500 dark:text-zinc-400 font-semibold block">
                 Connect With Me
               </span>
               
@@ -221,13 +221,13 @@ export default function ContactSection() {
                   href={PORTFOLIO_DATA.personal.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3.5 rounded-xl bg-[#0d0d11] border border-zinc-800 hover:border-zinc-700 flex items-center gap-3 transition-colors group"
+                  className="p-3.5 rounded-xl bg-white/90 dark:bg-[#0d0d11] border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 flex items-center gap-3 transition-colors group shadow-sm dark:shadow-none"
                 >
-                  <div className="p-2 rounded-lg bg-zinc-900 group-hover:text-teal-400 transition-colors">
+                  <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
                     <LinkedinIcon />
                   </div>
                   <div className="overflow-hidden">
-                    <span className="text-xs font-bold text-white block">LinkedIn</span>
+                    <span className="text-xs font-bold text-zinc-900 dark:text-white block">LinkedIn</span>
                     <span className="text-[10px] text-zinc-500 font-mono truncate block">
                       in/rafatha-andhika
                     </span>
@@ -238,13 +238,13 @@ export default function ContactSection() {
                   href={PORTFOLIO_DATA.personal.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3.5 rounded-xl bg-[#0d0d11] border border-zinc-800 hover:border-zinc-700 flex items-center gap-3 transition-colors group"
+                  className="p-3.5 rounded-xl bg-white/90 dark:bg-[#0d0d11] border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 flex items-center gap-3 transition-colors group shadow-sm dark:shadow-none"
                 >
-                  <div className="p-2 rounded-lg bg-zinc-900 group-hover:text-purple-400 transition-colors">
+                  <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
                     <GithubIcon />
                   </div>
                   <div className="overflow-hidden">
-                    <span className="text-xs font-bold text-white block">GitHub</span>
+                    <span className="text-xs font-bold text-zinc-900 dark:text-white block">GitHub</span>
                     <span className="text-[10px] text-zinc-500 font-mono truncate block">
                       @rafathaandhika
                     </span>
@@ -255,13 +255,13 @@ export default function ContactSection() {
                   href={PORTFOLIO_DATA.personal.instagram}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="p-3.5 rounded-xl bg-[#0d0d11] border border-zinc-800 hover:border-zinc-700 flex items-center gap-3 transition-colors group"
+                  className="p-3.5 rounded-xl bg-white/90 dark:bg-[#0d0d11] border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 flex items-center gap-3 transition-colors group shadow-sm dark:shadow-none"
                 >
-                  <div className="p-2 rounded-lg bg-zinc-900 group-hover:text-rose-400 transition-colors">
+                  <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 group-hover:text-rose-500 dark:group-hover:text-rose-400 transition-colors">
                     <InstagramIcon />
                   </div>
                   <div className="overflow-hidden">
-                    <span className="text-xs font-bold text-white block">Instagram</span>
+                    <span className="text-xs font-bold text-zinc-900 dark:text-white block">Instagram</span>
                     <span className="text-[10px] text-zinc-500 font-mono truncate block">
                       @rafathaandhika
                     </span>
@@ -270,14 +270,14 @@ export default function ContactSection() {
 
                 <a
                   href={`mailto:${PORTFOLIO_DATA.personal.email}`}
-                  className="p-3.5 rounded-xl bg-[#0d0d11] border border-zinc-800 hover:border-zinc-700 flex items-center gap-3 transition-colors group"
+                  className="p-3.5 rounded-xl bg-white/90 dark:bg-[#0d0d11] border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 flex items-center gap-3 transition-colors group shadow-sm dark:shadow-none"
                 >
-                  <div className="p-2 rounded-lg bg-zinc-900 group-hover:text-emerald-400 transition-colors">
+                  <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                     <Mail className="w-4 h-4" />
                   </div>
                   <div className="overflow-hidden">
-                    <span className="text-xs font-bold text-white block">Email</span>
-                    <span className="text-[10px] text-zinc-400 font-mono truncate block">
+                    <span className="text-xs font-bold text-zinc-900 dark:text-white block">Email</span>
+                    <span className="text-[10px] text-zinc-500 dark:text-zinc-400 font-mono truncate block">
                       rafatha.andikha123
                     </span>
                   </div>
@@ -291,12 +291,12 @@ export default function ContactSection() {
           <div className="lg:col-span-6 space-y-6">
             
             {/* Post Comment Form */}
-            <div className="p-6 sm:p-8 rounded-3xl bg-[#0d0d11] border border-zinc-800 space-y-4">
+            <div className="p-6 sm:p-8 rounded-3xl bg-white/90 dark:bg-[#0d0d11] border border-zinc-200 dark:border-zinc-800 space-y-4 shadow-sm dark:shadow-none">
               <div>
-                <h3 className="text-xl font-bold text-white tracking-tight">
+                <h3 className="text-xl font-bold text-zinc-900 dark:text-white tracking-tight">
                   Comments
                 </h3>
-                <p className="text-xs text-zinc-400 mt-1 font-mono">
+                <p className="text-xs text-zinc-600 dark:text-zinc-400 mt-1 font-mono">
                   Leave your thoughts here.
                 </p>
               </div>
@@ -308,7 +308,7 @@ export default function ContactSection() {
                   placeholder="Your Name"
                   value={commentName}
                   onChange={(e) => setCommentName(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-xs sm:text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-teal-500 transition-colors"
+                  className="w-full px-4 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs sm:text-sm text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-teal-500 transition-colors"
                 />
 
                 <textarea
@@ -317,13 +317,13 @@ export default function ContactSection() {
                   placeholder="Your Comment"
                   value={commentText}
                   onChange={(e) => setCommentText(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-xs sm:text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-teal-500 transition-colors resize-none"
+                  className="w-full px-4 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs sm:text-sm text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-teal-500 transition-colors resize-none"
                 />
 
                 <div className="flex justify-end">
                   <button
                     type="submit"
-                    className="px-5 py-2.5 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white font-semibold text-xs transition-colors cursor-pointer"
+                    className="px-5 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-white font-semibold text-xs transition-colors cursor-pointer"
                   >
                     Post Comment
                   </button>
@@ -336,22 +336,22 @@ export default function ContactSection() {
               {comments.map((comm) => (
                 <div
                   key={comm.id}
-                  className={`p-4 rounded-2xl bg-[#0d0d11] border ${
+                  className={`p-4 rounded-2xl bg-white/90 dark:bg-[#0d0d11] border shadow-sm dark:shadow-none ${
                     comm.isPinned
-                      ? "border-purple-500/40 bg-purple-950/10"
-                      : "border-zinc-800"
+                      ? "border-purple-300 dark:border-purple-500/40 bg-purple-50/60 dark:bg-purple-950/10"
+                      : "border-zinc-200 dark:border-zinc-800"
                   } space-y-2`}
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-full bg-zinc-800 flex items-center justify-center font-bold text-xs text-white">
+                      <div className="w-7 h-7 rounded-full bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center font-bold text-xs text-zinc-800 dark:text-white">
                         {comm.name.charAt(0).toUpperCase()}
                       </div>
-                      <span className="text-xs font-bold text-white">
+                      <span className="text-xs font-bold text-zinc-900 dark:text-white">
                         {comm.name}
                       </span>
                       {comm.isPinned && (
-                        <span className="flex items-center gap-1 text-[9px] font-mono uppercase px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                        <span className="flex items-center gap-1 text-[9px] font-mono uppercase px-2 py-0.5 rounded bg-purple-100 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-500/30">
                           <Pin className="w-2.5 h-2.5" /> PINNED
                         </span>
                       )}
@@ -359,18 +359,18 @@ export default function ContactSection() {
 
                     <button
                       onClick={() => handleLike(comm.id)}
-                      className="flex items-center gap-1 text-xs text-zinc-400 hover:text-rose-400 transition-colors cursor-pointer"
+                      className="flex items-center gap-1 text-xs text-zinc-500 dark:text-zinc-400 hover:text-rose-500 dark:hover:text-rose-400 transition-colors cursor-pointer"
                     >
                       <Heart className="w-3.5 h-3.5 hover:fill-rose-400" />
                       <span className="font-mono text-[10px]">{comm.likes}</span>
                     </button>
                   </div>
 
-                  <p className="text-xs text-zinc-300 leading-relaxed pl-9">
+                  <p className="text-xs text-zinc-700 dark:text-zinc-300 leading-relaxed pl-9">
                     {comm.text}
                   </p>
 
-                  <div className="text-[10px] font-mono text-zinc-500 text-right">
+                  <div className="text-[10px] font-mono text-zinc-400 dark:text-zinc-500 text-right">
                     {comm.time}
                   </div>
                 </div>

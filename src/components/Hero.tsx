@@ -47,7 +47,7 @@ export default function Hero() {
           <div className="lg:col-span-7 space-y-6">
             
             {/* Status Pill */}
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-900/90 border border-zinc-700/60 text-zinc-300 text-xs font-mono">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/90 dark:bg-zinc-900/90 border border-zinc-200 dark:border-zinc-700/60 text-zinc-700 dark:text-zinc-300 text-xs font-mono shadow-sm dark:shadow-none">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -57,21 +57,21 @@ export default function Hero() {
 
             {/* Giant Title */}
             <div>
-              <h1 className="text-4xl sm:text-6xl font-black text-white tracking-tight leading-[1.08] uppercase">
+              <h1 className="text-4xl sm:text-6xl font-black text-zinc-900 dark:text-white tracking-tight leading-[1.08] uppercase">
                 Odoo & Python <br />
-                <span className="text-zinc-400">Developer</span>
+                <span className="text-zinc-500 dark:text-zinc-400">Developer</span>
               </h1>
             </div>
 
             {/* Typewriter text */}
-            <div className="h-8 flex items-center text-lg sm:text-xl font-mono text-zinc-200">
-              <span className="text-purple-400 mr-2">&gt;</span>
+            <div className="h-8 flex items-center text-lg sm:text-xl font-mono text-zinc-800 dark:text-zinc-200">
+              <span className="text-purple-600 dark:text-purple-400 mr-2">&gt;</span>
               <span>{displayText}</span>
-              <span className="animate-pulse ml-1 text-teal-400 font-bold">|</span>
+              <span className="animate-pulse ml-1 text-teal-600 dark:text-teal-400 font-bold">|</span>
             </div>
 
             {/* Bio summary */}
-            <p className="text-sm sm:text-base text-zinc-400 max-w-xl leading-relaxed">
+            <p className="text-sm sm:text-base text-zinc-600 dark:text-zinc-400 max-w-xl leading-relaxed">
               {PORTFOLIO_DATA.personal.bioShort}
             </p>
 
@@ -80,7 +80,7 @@ export default function Hero() {
               {["Python", "Odoo ERP", "PostgreSQL", "Tailwind"].map((tech) => (
                 <span
                   key={tech}
-                  className="px-3 py-1 rounded-md bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-300"
+                  className="px-3 py-1 rounded-md bg-white/90 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-xs font-mono text-zinc-700 dark:text-zinc-300 shadow-sm dark:shadow-none"
                 >
                   {tech}
                 </span>
@@ -88,19 +88,19 @@ export default function Hero() {
             </div>
 
             {/* Bullet Links */}
-            <div className="space-y-2 pt-2 text-xs sm:text-sm font-mono text-zinc-400">
+            <div className="space-y-2 pt-2 text-xs sm:text-sm font-mono text-zinc-600 dark:text-zinc-400">
               <a
                 href="#portfolio"
-                className="flex items-center gap-2 hover:text-white transition-colors group"
+                className="flex items-center gap-2 hover:text-zinc-950 dark:hover:text-white transition-colors group"
               >
-                <span className="text-purple-400 group-hover:translate-x-1 transition-transform">→</span>
+                <span className="text-purple-600 dark:text-purple-400 group-hover:translate-x-1 transition-transform">→</span>
                 <span>explore my work below</span>
               </a>
               <a
                 href="#contact"
-                className="flex items-center gap-2 hover:text-white transition-colors group"
+                className="flex items-center gap-2 hover:text-zinc-950 dark:hover:text-white transition-colors group"
               >
-                <span className="text-teal-400 group-hover:translate-x-1 transition-transform">→</span>
+                <span className="text-teal-600 dark:text-teal-400 group-hover:translate-x-1 transition-transform">→</span>
                 <span>open to full-time & freelance opportunities</span>
               </a>
             </div>
@@ -118,7 +118,7 @@ export default function Hero() {
         <div className="pt-16 flex justify-center">
           <a
             href="#about"
-            className="flex items-center gap-2 text-xs font-mono text-zinc-500 hover:text-white transition-colors"
+            className="flex items-center gap-2 text-xs font-mono text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
           >
             <span>SCROLL</span>
             <ArrowDown className="w-3.5 h-3.5 animate-bounce" />

@@ -8,7 +8,7 @@ import BackgroundGrid from "@/components/BackgroundGrid";
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen text-zinc-100 flex flex-col font-sans selection:bg-purple-500/30 selection:text-white">
+    <div className="relative min-h-screen text-zinc-900 dark:text-zinc-100 flex flex-col font-sans selection:bg-purple-500/30 selection:text-zinc-900 dark:selection:text-white">
       {/* Background Motif Kotak-kotak Elegan & Ambient Lighting */}
       <BackgroundGrid />
 

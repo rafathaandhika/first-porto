@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, useMotionValue, useSpring, useTransform, animate } from "framer-motion";
 import { Hand } from "lucide-react";
@@ -21,25 +21,23 @@ export default function InteractiveLanyard() {
 
   // Rotation tilts naturally with horizontal displacement
   const rotate = useTransform(smoothX, [-200, 200], [-24, 24]);
-  // 3D Tilt perspective transforms
   const rotateY = useTransform(smoothX, [-200, 200], [-18, 18]);
   const rotateX = useTransform(smoothY, [-100, 250], [15, -15]);
 
-  // Dynamic strap SVG coordinates
-  const [strapEnd, setStrapEnd] = useState({ x: 0, y: 0 });
+  // Compute SVG paths directly via MotionValue (zero React re-renders)
+  const shadowPath = useTransform([smoothX, smoothY], ([x, y]: number[]) => {
+    const midX = x * 0.4;
+    const midY = (70 + y) * 0.5;
+    const endY = 75 + y;
+    return `M -12 0 Q ${midX} ${midY} ${x - 12} ${endY} L ${x + 12} ${endY} Q ${midX} ${midY} 12 0 Z`;
+  });
 
-  useEffect(() => {
-    const unsubX = smoothX.on("change", (val) => {
-      setStrapEnd((prev) => ({ ...prev, x: val }));
-    });
-    const unsubY = smoothY.on("change", (val) => {
-      setStrapEnd((prev) => ({ ...prev, y: val }));
-    });
-    return () => {
-      unsubX();
-      unsubY();
-    };
-  }, [smoothX, smoothY]);
+  const strapPath = useTransform([smoothX, smoothY], ([x, y]: number[]) => {
+    const midX = x * 0.5;
+    const midY = (70 + y) * 0.5;
+    const endY = 75 + y;
+    return `M -14 0 Q ${midX} ${midY} ${x - 14} ${endY} L ${x + 14} ${endY} Q ${midX} ${midY} 14 0 Z`;
+  });
 
   // Gentle idle pendulum swing when not interacting
   useEffect(() => {
@@ -76,25 +74,21 @@ export default function InteractiveLanyard() {
             <stop offset="50%" stopColor="#3f3f46" />
             <stop offset="100%" stopColor="#18181b" />
           </linearGradient>
-          <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="2" dy="4" stdDeviation="4" floodColor="#000000" floodOpacity="0.6" />
-          </filter>
         </defs>
 
         {/* Shadow ribbon */}
-        <path
-          d={`M -12 0 Q ${strapEnd.x * 0.4} ${(70 + strapEnd.y) * 0.5} ${strapEnd.x - 12} ${75 + strapEnd.y} L ${strapEnd.x + 12} ${75 + strapEnd.y} Q ${strapEnd.x * 0.4} ${(70 + strapEnd.y) * 0.5} 12 0 Z`}
+        <motion.path
+          d={shadowPath}
           fill="#000000"
-          opacity="0.35"
+          opacity="0.3"
         />
 
-        {/* Main Ribbon Fabric (Bersih tanpa teks) */}
-        <path
-          d={`M -14 0 Q ${strapEnd.x * 0.5} ${(70 + strapEnd.y) * 0.5} ${strapEnd.x - 14} ${75 + strapEnd.y} L ${strapEnd.x + 14} ${75 + strapEnd.y} Q ${strapEnd.x * 0.5} ${(70 + strapEnd.y) * 0.5} 14 0 Z`}
+        {/* Main Ribbon Fabric */}
+        <motion.path
+          d={strapPath}
           fill="url(#lanyardGrad)"
           stroke="#52525b"
           strokeWidth="1"
-          filter="url(#shadow)"
         />
       </svg>
 
@@ -138,7 +132,7 @@ export default function InteractiveLanyard() {
         {/* Hint Pill (Disappears once dragged) */}
         {!hasInteracted && (
           <div className="absolute -top-12 left-1/2 -translate-x-1/2 z-40 pointer-events-none whitespace-nowrap">
-            <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/20 border border-purple-500/40 text-purple-300 text-[11px] font-mono font-semibold backdrop-blur-md shadow-lg animate-bounce">
+            <span className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-100/90 dark:bg-purple-500/20 border border-purple-300 dark:border-purple-500/40 text-purple-700 dark:text-purple-300 text-[11px] font-mono font-semibold shadow-lg animate-bounce">
               <Hand className="w-3.5 h-3.5 animate-pulse" />
               Tarik / Geser Saya!
             </span>
@@ -146,13 +140,13 @@ export default function InteractiveLanyard() {
         )}
 
         {/* The Realistic ID Badge Card (Clean Minimalist Edition) */}
-        <div className="w-72 sm:w-80 rounded-2xl bg-gradient-to-b from-zinc-900 to-black p-5 border border-zinc-700/80 shadow-2xl shadow-black/90 transition-shadow">
+        <div className="w-72 sm:w-80 rounded-2xl bg-gradient-to-b from-white to-zinc-50 dark:from-zinc-900 dark:to-black p-5 border border-zinc-200 dark:border-zinc-700/80 shadow-2xl shadow-zinc-300/60 dark:shadow-black/90">
           
           {/* Top Clip Hole cutout */}
-          <div className="w-12 h-2.5 mx-auto bg-zinc-950 rounded-full border border-zinc-800 mb-4 shadow-inner" />
+          <div className="w-12 h-2.5 mx-auto bg-zinc-200 dark:bg-zinc-950 rounded-full border border-zinc-300 dark:border-zinc-800 mb-4 shadow-inner" />
 
           {/* Portrait Container */}
-          <div className="relative mb-4 aspect-[4/5] rounded-xl overflow-hidden bg-zinc-800 border border-zinc-700/60 shadow-inner group-hover:border-zinc-500 transition-colors">
+          <div className="relative mb-4 aspect-[4/5] rounded-xl overflow-hidden bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700/60 shadow-inner group-hover:border-zinc-400 dark:group-hover:border-zinc-500 transition-colors">
             <Image
               src="/profile.jpg"
               alt={PORTFOLIO_DATA.personal.name}
@@ -162,15 +156,15 @@ export default function InteractiveLanyard() {
               className="object-cover object-center filter contrast-[1.05]"
               draggable={false}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent z-10 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 dark:from-black/75 via-transparent to-transparent z-10 pointer-events-none" />
           </div>
 
           {/* Name & Title */}
           <div className="space-y-1">
-            <h3 className="text-base font-bold text-white tracking-tight">
+            <h3 className="text-base font-bold text-zinc-900 dark:text-white tracking-tight">
               {PORTFOLIO_DATA.personal.shortName}
             </h3>
-            <p className="text-xs text-zinc-400 font-mono">
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 font-mono">
               {PORTFOLIO_DATA.personal.role}
             </p>
           </div>

@@ -2,34 +2,22 @@ export default function BackgroundGrid() {
   return (
     <div
       aria-hidden="true"
-      className="fixed inset-0 pointer-events-none -z-10 overflow-hidden bg-[#07080c]"
+      className="fixed inset-0 pointer-events-none -z-10 overflow-hidden bg-[#f8fafc] dark:bg-[#07080c]"
     >
-      {/* 1. Base Elegant Grid Pattern (Kotak-kotak presisi) */}
-      <div className="absolute inset-0 bg-grid-elegant opacity-100" />
+      {/* 1. Base Elegant Grid Pattern */}
+      <div className="absolute inset-0 bg-grid-elegant" />
 
-      {/* 2. Top-Center Ambient Glow (Violet / Purple) */}
+      {/* 2. Top-Center Ambient Glow (Zero-cost radial gradient, no heavy GPU blur) */}
       <div
-        className="absolute -top-[150px] left-1/2 -translate-x-1/2 w-[700px] h-[500px] 
-        rounded-full bg-gradient-to-b from-purple-600/18 via-indigo-500/10 to-transparent 
-        blur-[120px] transform-gpu pointer-events-none"
+        className="absolute inset-0 opacity-100 dark:opacity-90"
+        style={{
+          backgroundImage:
+            "radial-gradient(ellipse 65% 45% at 50% 0%, rgba(147, 51, 234, 0.16), transparent 70%), radial-gradient(circle 420px at 5% 45%, rgba(20, 184, 166, 0.10), transparent 70%), radial-gradient(circle 480px at 95% 85%, rgba(147, 51, 234, 0.11), transparent 70%)",
+        }}
       />
 
-      {/* 3. Mid-Left Subtle Cyan/Teal Accent */}
-      <div
-        className="absolute top-[40%] -left-[120px] w-[500px] h-[500px] 
-        rounded-full bg-teal-500/10 blur-[130px] transform-gpu pointer-events-none"
-      />
-
-      {/* 4. Bottom-Right Ambient Indigo Glow */}
-      <div
-        className="absolute bottom-[10%] -right-[100px] w-[600px] h-[550px] 
-        rounded-full bg-purple-600/12 blur-[140px] transform-gpu pointer-events-none"
-      />
-
-      {/* 5. Radial Vignette Overlay: membuat motif kotak tetap terlihat tegas dan menyatu alami */}
-      <div
-        className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,transparent_40%,#07080c_95%)] opacity-50"
-      />
+      {/* 3. Radial Vignette Overlay */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,transparent_40%,#f8fafc_95%)] dark:bg-[radial-gradient(circle_at_50%_40%,transparent_40%,#07080c_95%)] opacity-55 dark:opacity-50" />
     </div>
   );
 }
