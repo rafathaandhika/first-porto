@@ -87,44 +87,94 @@ export default function ContactSection() {
   const [comments, setComments] = useState<Comment[]>(defaultComments);
   const [commentName, setCommentName] = useState("");
   const [commentText, setCommentText] = useState("");
+  const [isPostingComment, setIsPostingComment] = useState(false);
+  const [commentNotice, setCommentNotice] = useState<string>("");
 
-  // Load from local storage
+  // Load shared comments from backend API
   useEffect(() => {
-    const saved = localStorage.getItem("guestbook_comments");
-    if (saved) {
-      try {
-        setComments(JSON.parse(saved));
-      } catch (e) {
-        console.error(e);
-      }
-    }
+    let active = true;
+    fetch("/api/comments", { cache: "no-store" })
+      .then((res) => res.json())
+      .then((data: { comments?: Comment[]; persistent?: boolean }) => {
+        if (!active) return;
+        if (Array.isArray(data.comments) && data.comments.length > 0) {
+          setComments(data.comments);
+        }
+      })
+      .catch((err) => {
+        console.error("Failed to fetch comments:", err);
+      });
+    return () => {
+      active = false;
+    };
   }, []);
 
-  const handlePostComment = (e: React.FormEvent) => {
+  const handlePostComment = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!commentName.trim() || !commentText.trim()) return;
+    if (!commentName.trim() || !commentText.trim() || isPostingComment) return;
 
-    const newComment: Comment = {
-      id: "comm-" + Date.now(),
-      name: commentName.trim(),
-      text: commentText.trim(),
-      time: "Baru saja",
-      likes: 0,
-    };
+    setIsPostingComment(true);
+    setCommentNotice("");
 
-    const updated = [comments[0], newComment, ...comments.slice(1)];
-    setComments(updated);
-    localStorage.setItem("guestbook_comments", JSON.stringify(updated));
-    setCommentName("");
-    setCommentText("");
+    try {
+      const res = await fetch("/api/comments", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: commentName.trim(),
+          text: commentText.trim(),
+        }),
+      });
+
+      const data = (await res.json()) as {
+        comments?: Comment[];
+        persistent?: boolean;
+        error?: string;
+      };
+
+      if (!res.ok) {
+        throw new Error(data.error || "Gagal mengirim komentar.");
+      }
+
+      if (Array.isArray(data.comments)) {
+        setComments(data.comments);
+      }
+
+      setCommentName("");
+      setCommentText("");
+
+      if (data.persistent === false) {
+        setCommentNotice(
+          "Database cloud (Upstash Redis) belum terhubung di Vercel, sehingga komentar belum tersimpan permanen lintas perangkat."
+        );
+      }
+    } catch {
+      setCommentNotice("Gagal mengirim komentar. Silakan coba lagi.");
+    } finally {
+      setIsPostingComment(false);
+    }
   };
 
-  const handleLike = (id: string) => {
-    const updated = comments.map((c) =>
-      c.id === id ? { ...c, likes: c.likes + 1 } : c
+  const handleLike = async (id: string) => {
+    setComments((prev) =>
+      prev.map((c) => (c.id === id ? { ...c, likes: c.likes + 1 } : c))
     );
-    setComments(updated);
-    localStorage.setItem("guestbook_comments", JSON.stringify(updated));
+
+    try {
+      const res = await fetch("/api/comments", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      if (res.ok) {
+        const data = (await res.json()) as { comments?: Comment[] };
+        if (Array.isArray(data.comments)) {
+          setComments(data.comments);
+        }
+      }
+    } catch {
+      // Keep optimistic UI if network fails
+    }
   };
 
   const handleSendEmail = async (e: React.FormEvent) => {
@@ -379,12 +429,23 @@ export default function ContactSection() {
                   className="w-full px-4 py-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs sm:text-sm text-zinc-900 dark:text-white placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:border-teal-500 transition-colors resize-none"
                 />
 
-                <div className="flex justify-end">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="text-[11px] text-amber-600 dark:text-amber-400">
+                    {commentNotice}
+                  </div>
                   <button
                     type="submit"
-                    className="px-5 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-white font-semibold text-xs transition-colors cursor-pointer"
+                    disabled={isPostingComment}
+                    className="px-5 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold text-xs transition-colors cursor-pointer shrink-0 inline-flex items-center gap-1.5"
                   >
-                    Post Comment
+                    {isPostingComment ? (
+                      <>
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        Posting...
+                      </>
+                    ) : (
+                      "Post Comment"
+                    )}
                   </button>
                 </div>
               </form>
