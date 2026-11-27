@@ -109,6 +109,12 @@ export interface LocalizedContent {
     ctaText: string;
     ctaWhatsapp: string;
     items: ServiceItem[];
+    workflowTitle: string;
+    workflowSubtitle: string;
+    workflowSteps: { step: string; title: string; description: string }[];
+    faqTitle: string;
+    faqSubtitle: string;
+    faqs: { question: string; answer: string }[];
   };
   portfolio: {
     heading: string;
@@ -251,6 +257,54 @@ const CONTENT: Record<Language, LocalizedContent> = {
             "Sinkronisasi data & validasi payload aman",
           ],
           icon: "api",
+        },
+      ],
+      workflowTitle: "Alur Kerja Freelance",
+      workflowSubtitle: "Proses terstruktur dan transparan dari diskusi awal hingga serah terima modul siap pakai.",
+      workflowSteps: [
+        {
+          step: "01",
+          title: "Konsultasi & Scope",
+          description: "Diskusi kebutuhan modul, versi Odoo (v14–v18), serta target hasil via WhatsApp atau call singkat.",
+        },
+        {
+          step: "02",
+          title: "Estimasi & Timeline",
+          description: "Penyusunan rincian teknis, estimasi biaya transparan, dan jadwal pengerjaan yang realistis.",
+        },
+        {
+          step: "03",
+          title: "Development & Demo",
+          description: "Pengerjaan bertahap di staging environment agar Anda bisa memantau progres dan memberi feedback cepat.",
+        },
+        {
+          step: "04",
+          title: "Handover & Dukungan",
+          description: "Pengiriman kode bersih via Git, catatan deployment, serta dukungan perbaikan bug setelah rilis.",
+        },
+      ],
+      faqTitle: "Pertanyaan Umum (FAQ)",
+      faqSubtitle: "Informasi singkat seputar teknis pengerjaan dan kerja sama freelance.",
+      faqs: [
+        {
+          question: "Versi Odoo apa saja yang dapat ditangani?",
+          answer:
+            "Saya menangani Odoo v14 hingga v18 (Community maupun Enterprise), termasuk pembuatan modul kustom, perbaikan bug ORM/XML, QWeb PDF/Excel report, Security ACL, dan integrasi API.",
+        },
+        {
+          question: "Apakah bisa mengerjakan tugas kecil atau bug fix mendesak?",
+          answer:
+            "Bisa. Mulai dari perbaikan error spesifik, penyesuaian format cetak PDF/Excel, penambahan hak akses user, hingga pengembangan modul baru sesuai SOP bisnis.",
+        },
+        {
+          question: "Bagaimana kerahasiaan data dan kode proyek klien (NDA)?",
+          answer:
+            "Seluruh kode, skema database, dan alur bisnis klien dijaga kerahasiaannya. Pengerjaan dapat langsung dilakukan di repository privat atau server staging milik Anda sesuai perjanjian NDA.",
+        },
+        {
+          question: "Bagaimana cara memulai diskusi atau meminta estimasi biaya?",
+          answer:
+            "Cukup klik tombol Konsultasi via WhatsApp atau isi form kontak di bawah dengan ringkasan kebutuhan dan versi Odoo yang digunakan untuk mendapatkan estimasi awal.",
         },
       ],
     },
@@ -549,6 +603,54 @@ const CONTENT: Record<Language, LocalizedContent> = {
             "Reliable data synchronization & payload validation",
           ],
           icon: "api",
+        },
+      ],
+      workflowTitle: "How I Work",
+      workflowSubtitle: "A clear, transparent process from initial requirement scoping to clean production handover.",
+      workflowSteps: [
+        {
+          step: "01",
+          title: "Discovery & Scope",
+          description: "Discuss your module requirements, Odoo version (v14–v18), and expected outcomes via WhatsApp or a brief call.",
+        },
+        {
+          step: "02",
+          title: "Timeline & Quote",
+          description: "Receive a clear technical breakdown, milestone plan, and transparent pricing before development begins.",
+        },
+        {
+          step: "03",
+          title: "Build & Staging Demo",
+          description: "Iterative implementation in a staging environment so you can verify progress and share fast feedback.",
+        },
+        {
+          step: "04",
+          title: "Handover & Support",
+          description: "Clean Git source delivery, deployment guidance, and post-launch bug-fix support.",
+        },
+      ],
+      faqTitle: "Frequently Asked Questions",
+      faqSubtitle: "Quick answers regarding scope, Odoo versions, and freelance collaboration.",
+      faqs: [
+        {
+          question: "Which Odoo versions do you support?",
+          answer:
+            "I work across Odoo v14 through v18 (Community & Enterprise), covering custom ORM modules, XML/OWL views, QWeb PDF/Excel reports, Security ACLs, and REST/RPC integrations.",
+        },
+        {
+          question: "Do you take small tasks or urgent bug fixes?",
+          answer:
+            "Yes. I handle both focused fixes—such as resolving view/ORM errors, adjusting QWeb PDF/Excel layouts, or tightening ACL rules—and full custom module builds.",
+        },
+        {
+          question: "How do you handle NDA and client code confidentiality?",
+          answer:
+            "All business logic, data, and source code remain strictly confidential. Work can be carried out directly inside your private Git repository or staging server under NDA.",
+        },
+        {
+          question: "How do we start a project or request an estimate?",
+          answer:
+            "Click Chat on WhatsApp or submit the contact form below with a brief summary of your requirements and Odoo version for an initial timeline and quote.",
         },
       ],
     },
