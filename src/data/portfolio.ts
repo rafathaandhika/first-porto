@@ -165,7 +165,7 @@ const CONTENT: Record<Language, LocalizedContent> = {
       contact: "Kontak",
     },
     hero: {
-      status: "AVAILABLE FOR FREELANCE & PROJECTS",
+      status: "TERSEDIA UNTUK FREELANCE & PROYEK",
       titleLine1: "Odoo & Python",
       titleLine2: "Developer",
       bioShort:
@@ -180,12 +180,12 @@ const CONTENT: Record<Language, LocalizedContent> = {
       bioAbout:
         "Developer dengan fokus pada backend Python dan ekosistem Odoo ERP (v14–v18). Berpengalaman dalam merancang skema database relasional PostgreSQL, membangun modul kustom, automasi alur kerja operasional, laporan QWeb PDF/Excel, serta integrasi sistem pihak ketiga melalui API.",
       quote:
-        "Turning complex business logic into clean, robust, and automated digital systems.",
-      previewCv: "Preview CV",
-      viewProjects: "Lihat Project",
+        "Mengubah logika bisnis yang kompleks menjadi sistem digital yang bersih, tangguh, dan terotomatisasi.",
+      previewCv: "Lihat CV",
+      viewProjects: "Lihat Proyek",
       cvModalTitle: "Pratinjau Curriculum Vitae",
       openNewTab: "Buka di Tab Baru",
-      downloadPdf: "Download",
+      downloadPdf: "Unduh PDF",
       stats: [
         { number: "5+", label: "Project Nyata" },
         { number: "v14–v18", label: "Versi Odoo" },
@@ -452,7 +452,7 @@ const CONTENT: Record<Language, LocalizedContent> = {
       commentError: "Gagal mengirim komentar. Silakan coba lagi.",
     },
     footer: {
-      rights: "All rights reserved.",
+      rights: "Hak cipta dilindungi.",
     },
   },
   en: {
