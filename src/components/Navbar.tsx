@@ -78,7 +78,7 @@ export default function Navbar() {
                 <a
                   key={item.id}
                   href={`#${item.id}`}
-                  className={`relative px-2 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-sm font-medium whitespace-nowrap transition-colors ${
+                  className={`relative px-1.5 sm:px-4 py-1.5 rounded-full text-[11px] sm:text-sm font-medium whitespace-nowrap transition-colors ${
                     isActive
                       ? "text-white bg-zinc-900 dark:bg-white/10 shadow-sm"
                       : "text-zinc-600 hover:text-zinc-950 dark:text-zinc-400 dark:hover:text-zinc-200"
@@ -96,7 +96,7 @@ export default function Navbar() {
             onClick={toggleLang}
             aria-label={lang === "id" ? "Switch to English" : "Ganti ke Bahasa Indonesia"}
             title={lang === "id" ? "Switch to English" : "Ganti ke Bahasa Indonesia"}
-            className="px-2.5 sm:px-3 py-2 sm:py-2 rounded-full bg-white/85 dark:bg-[#121216]/85 backdrop-blur-md border border-zinc-200/80 dark:border-white/10 text-[11px] sm:text-xs font-mono font-bold text-zinc-700 dark:text-zinc-200 hover:text-zinc-950 dark:hover:text-white shadow-lg shadow-zinc-200/50 dark:shadow-xl dark:shadow-black/40 transition-all hover:scale-105 cursor-pointer shrink-0 uppercase"
+            className="px-2 sm:px-3 py-2 sm:py-2 rounded-full bg-white/85 dark:bg-[#121216]/85 backdrop-blur-md border border-zinc-200/80 dark:border-white/10 text-[11px] sm:text-xs font-mono font-bold text-zinc-700 dark:text-zinc-200 hover:text-zinc-950 dark:hover:text-white shadow-lg shadow-zinc-200/50 dark:shadow-xl dark:shadow-black/40 transition-all hover:scale-105 cursor-pointer shrink-0 uppercase"
           >
             {lang === "id" ? "ID" : "EN"}
           </button>

@@ -159,10 +159,10 @@ export interface LocalizedContent {
 const CONTENT: Record<Language, LocalizedContent> = {
   id: {
     nav: {
-      home: "Home",
-      about: "About",
-      portfolio: "Portfolio",
-      contact: "Contact",
+      home: "Beranda",
+      about: "Tentang",
+      portfolio: "Portofolio",
+      contact: "Kontak",
     },
     hero: {
       status: "AVAILABLE FOR FREELANCE & PROJECTS",
@@ -171,7 +171,7 @@ const CONTENT: Record<Language, LocalizedContent> = {
       bioShort:
         "Menciptakan sistem ERP modern dengan tampilan bersih, responsif, dan logika bisnis yang kuat. Mengubah alur bisnis kompleks menjadi modul Odoo yang efisien dan mudah digunakan.",
       exploreServices: "lihat layanan freelance",
-      exploreWork: "jelajahi portofolio project",
+      exploreWork: "jelajahi portofolio proyek",
       openToOpportunities: "terbuka untuk proyek freelance & konsultasi ERP",
       dragHint: "Tarik / Geser Saya!",
     },
@@ -255,12 +255,12 @@ const CONTENT: Record<Language, LocalizedContent> = {
       ],
     },
     portfolio: {
-      heading: "Portfolio Showcase",
+      heading: "Galeri Portofolio",
       subheading:
         "Jelajahi pengalaman proyek Odoo & Python nyata beserta keahlian teknis saya.",
-      tabProjects: "Projects",
+      tabProjects: "Proyek",
       tabStack: "Tech Stack",
-      backToProjects: "Kembali ke Projects",
+      backToProjects: "Kembali ke Daftar Proyek",
       realDocBadge: "Dokumentasi Asli",
       techUsedLabel: "Teknologi Dipakai",
       contributionsCountLabel: "Kontribusi",
