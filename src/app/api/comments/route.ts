@@ -1,6 +1,7 @@
 import { NextResponse, connection } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
+import crypto from "crypto";
 
 export interface CommentItem {
   id: string;
@@ -14,6 +15,62 @@ export interface CommentItem {
 
 const REDIS_KEY = "portfolio_guestbook_comments_v1";
 const DEV_STORE_PATH = path.join(process.cwd(), ".next", "guestbook-comments.json");
+const RATE_LIMIT_MAX = 3;
+const RATE_LIMIT_WINDOW_SEC = 600; // 10 minutes
+const MAX_STORED_COMMENTS = 50;
+const localRateLimitMap = new Map<string, { count: number; resetAt: number }>();
+
+function getClientIp(request: Request): string {
+  const forwarded = request.headers.get("x-forwarded-for");
+  if (forwarded) {
+    const first = forwarded.split(",")[0]?.trim();
+    if (first) return first;
+  }
+  return request.headers.get("x-real-ip")?.trim() || "local";
+}
+
+async function isRateLimited(ip: string): Promise<boolean> {
+  const ipHash = crypto.createHash("sha256").update(ip).digest("hex").slice(0, 16);
+  const redis = getRedisConfig();
+
+  if (redis) {
+    try {
+      const rateKey = `portfolio_ratelimit:comment:${ipHash}`;
+      const res = await fetch(`${redis.url}/pipeline`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${redis.token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify([
+          ["INCR", rateKey],
+          ["EXPIRE", rateKey, RATE_LIMIT_WINDOW_SEC, "NX"],
+        ]),
+        cache: "no-store",
+      });
+      if (res.ok) {
+        const results = (await res.json()) as { result?: number }[];
+        const count = Number(results?.[0]?.result ?? 1);
+        return count > RATE_LIMIT_MAX;
+      }
+    } catch {
+      // Fallback to in-memory limiter if Redis pipeline fails transiently
+    }
+  }
+
+  const now = Date.now();
+  const entry = localRateLimitMap.get(ipHash);
+  if (!entry || entry.resetAt <= now) {
+    localRateLimitMap.set(ipHash, {
+      count: 1,
+      resetAt: now + RATE_LIMIT_WINDOW_SEC * 1000,
+    });
+    return false;
+  }
+
+  entry.count += 1;
+  return entry.count > RATE_LIMIT_MAX;
+}
 
 const DEFAULT_COMMENTS: CommentItem[] = [
   {
@@ -148,18 +205,61 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const body = (await request.json()) as { name?: string; text?: string };
-    const cleanName = (body.name || "").trim().slice(0, 60);
-    const cleanText = (body.text || "").trim().slice(0, 500);
+    const body = (await request.json()) as {
+      name?: string;
+      text?: string;
+      website?: string;
+    };
 
-    if (!cleanName || !cleanText) {
+    // Silent/hard reject honeypot bots
+    if (typeof body.website === "string" && body.website.trim().length > 0) {
       return NextResponse.json(
-        { error: "Nama dan komentar tidak boleh kosong." },
+        { error: "Permintaan tidak valid." },
         { status: 400 }
       );
     }
 
+    const cleanName = (body.name || "").trim().replace(/\s+/g, " ").slice(0, 60);
+    const cleanText = (body.text || "").trim().slice(0, 500);
+
+    if (cleanName.length < 2 || cleanText.length < 3) {
+      return NextResponse.json(
+        { error: "Nama minimal 2 karakter dan komentar minimal 3 karakter." },
+        { status: 400 }
+      );
+    }
+
+    const urlMatches = cleanText.match(/https?:\/\/|www\./gi);
+    if (urlMatches && urlMatches.length > 1) {
+      return NextResponse.json(
+        { error: "Komentar tidak boleh mengandung lebih dari 1 tautan." },
+        { status: 400 }
+      );
+    }
+
+    if (await isRateLimited(getClientIp(request))) {
+      return NextResponse.json(
+        { error: "Terlalu banyak komentar dikirim. Tunggu beberapa menit sebelum mencoba lagi." },
+        { status: 429 }
+      );
+    }
+
     const { comments } = await readComments();
+    const isDuplicate = comments
+      .filter((c) => !c.isPinned)
+      .slice(0, 5)
+      .some(
+        (c) =>
+          c.name.trim().toLowerCase() === cleanName.toLowerCase() &&
+          c.text.trim().toLowerCase() === cleanText.toLowerCase()
+      );
+    if (isDuplicate) {
+      return NextResponse.json(
+        { error: "Komentar yang sama sudah dikirim baru-baru ini." },
+        { status: 409 }
+      );
+    }
+
     const now = new Date();
     const formattedDate = now.toLocaleDateString("id-ID", {
       day: "numeric",
@@ -177,7 +277,7 @@ export async function POST(request: Request) {
     };
 
     const pinned = comments.filter((c) => c.isPinned);
-    const others = comments.filter((c) => !c.isPinned);
+    const others = comments.filter((c) => !c.isPinned).slice(0, MAX_STORED_COMMENTS - 1);
     const updated = [...pinned, newComment, ...others];
 
     const saved = await writeComments(updated);

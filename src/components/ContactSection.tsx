@@ -92,6 +92,7 @@ export default function ContactSection() {
   const [comments, setComments] = useState<Comment[]>(defaultComments);
   const [commentName, setCommentName] = useState("");
   const [commentText, setCommentText] = useState("");
+  const [commentWebsite, setCommentWebsite] = useState("");
   const [isPostingComment, setIsPostingComment] = useState(false);
   const [commentNotice, setCommentNotice] = useState<string>("");
 
@@ -132,6 +133,7 @@ export default function ContactSection() {
         body: JSON.stringify({
           name: commentName.trim(),
           text: commentText.trim(),
+          website: commentWebsite,
         }),
       });
 
@@ -142,7 +144,7 @@ export default function ContactSection() {
       };
 
       if (!res.ok) {
-        throw new Error(data.error || "Failed to post comment.");
+        throw new Error(data.error || t.contact.commentError);
       }
 
       if (Array.isArray(data.comments)) {
@@ -151,12 +153,13 @@ export default function ContactSection() {
 
       setCommentName("");
       setCommentText("");
+      setCommentWebsite("");
 
       if (data.persistent === false) {
         setCommentNotice(t.contact.redisNotice);
       }
-    } catch {
-      setCommentNotice(t.contact.commentError);
+    } catch (err) {
+      setCommentNotice(err instanceof Error && err.message ? err.message : t.contact.commentError);
     } finally {
       setIsPostingComment(false);
     }
@@ -454,6 +457,16 @@ export default function ContactSection() {
               </div>
 
               <form onSubmit={handlePostComment} className="space-y-3">
+                <input
+                  type="text"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  value={commentWebsite}
+                  onChange={(e) => setCommentWebsite(e.target.value)}
+                  className="hidden"
+                />
                 <input
                   type="text"
                   required
