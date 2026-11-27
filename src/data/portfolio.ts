@@ -11,6 +11,7 @@ export interface ProjectItem {
   subtitle: string;
   category: string;
   description: string;
+  impact: string;
   contributions: string[];
   techCount: number;
   featuresCount: number;
@@ -127,6 +128,8 @@ export interface LocalizedContent {
     contributionsCountLabel: string;
     deploymentLabel: string;
     contributionsTitle: string;
+    impactLabel: string;
+    impactTitle: string;
     keyFeaturesTitle: string;
     detailsBtn: string;
     contributionsSuffix: string;
@@ -320,6 +323,8 @@ const CONTENT: Record<Language, LocalizedContent> = {
       contributionsCountLabel: "Kontribusi",
       deploymentLabel: "Deployment",
       contributionsTitle: "Kontribusi Saya",
+      impactLabel: "Dampak",
+      impactTitle: "Dampak & Hasil Nyata",
       keyFeaturesTitle: "Fitur Utama",
       detailsBtn: "Detail →",
       contributionsSuffix: "Kontribusi",
@@ -331,6 +336,8 @@ const CONTENT: Record<Language, LocalizedContent> = {
           category: "Healthcare ERP",
           description:
             "Suite modul Odoo ERP kustom untuk mendigitalisasi operasional klinik gigi—mencakup reservasi janji temu, jadwal dokter real-time, resep & template tindakan gigi digital, notifikasi pengingat otomatis, serta integrasi inventaris dan penagihan.",
+          impact:
+            "Mempercepat pengisian resep tindakan gigi dengan template otomatis & menekan jadwal terlewat lewat pengingat activity feed.",
           contributions: [
             "Membangun fitur Prescriptions Template pada menu konfigurasi dan mengotomatiskan pengisian data treatment di modul resep dokter gigi berdasarkan template yang dipilih.",
             "Menambahkan pengaturan Reminder Time dan sistem notifikasi otomatis untuk jadwal janji temu pasien langsung ke activity feed Odoo.",
@@ -362,6 +369,8 @@ const CONTENT: Record<Language, LocalizedContent> = {
           category: "GovTech & Tax ERP",
           description:
             "Platform ERP perpajakan daerah berbasis Odoo 17 untuk pengelolaan pelaporan pajak daerah (SPTPD), penerbitan kode billing, pemantauan transaksi e-tax, serta pencetakan dokumen formulir perpajakan resmi berbasis QWeb.",
+          impact:
+            "Menjamin akurasi cetakan resmi SPTPD Pajak Hotel & Restoran, format NPWPD, dan kode billing sesuai standar formulir fisik instansi.",
           contributions: [
             "Memperbarui format cetak PDF SPTPD Pajak Hotel dan SPTPD Pajak Restoran menggunakan template QWeb agar sesuai dengan standar formulir fisik terbaru.",
             "Merevisi tata letak tabel rincian kamar full-row, perataan elemen formulir, serta mekanisme tabel fallback pada laporan PDF.",
@@ -392,6 +401,8 @@ const CONTENT: Record<Language, LocalizedContent> = {
           category: "GovTech & Security",
           description:
             "Sistem informasi pendapatan daerah berbasis Odoo 17 yang menangani siklus pelaporan pajak, permohonan perubahan data wajib pajak, koreksi ketetapan lebih/kurang bayar, serta kontrol keamanan berbasis peran pengguna.",
+          impact:
+            "Mempermudah audit perubahan ketetapan pajak via diff otomatis sebelum/sesudah revisi serta mengunci akses sensitif non-admin lewat Security ACL.",
           contributions: [
             "Mengembangkan fitur deteksi otomatis rincian perubahan data (diff tracking) pada modul permohonan ubah data ketetapan pajak.",
             "Menstandarkan format masa pajak ke MM/YYYY serta menyempurnakan tampilan rincian perbandingan form revisi.",
@@ -422,6 +433,8 @@ const CONTENT: Record<Language, LocalizedContent> = {
           category: "GovTech & Analytics",
           description:
             "Sistem ERP pendapatan daerah di Odoo 18 yang mencakup pengelolaan pajak, retribusi, target opsen, pengajuan keberatan & pembatalan ketetapan pajak, hingga pelaporan realisasi keuangan daerah dalam format PDF dan Excel.",
+          impact:
+            "Mendigitalkan alur persetujuan keberatan & pembatalan SKPD end-to-end sekaligus mengamankan sistem produksi dari kebocoran error traceback.",
           contributions: [
             "Mengembangkan workflow Keberatan Pajak untuk sektor PBJT, Mineral, Walet, Reklame, & Air Tanah (termasuk keberatan SKPDKB/SKPDKBT, multi-select objek keberatan, penomoran SK otomatis, & kontrol approval Bidang Keberatan).",
             "Membangun fitur Pembatalan Ketetapan Pajak (SPTPD/SKPD, SKPDKB, SKPDKBT, SKPDLB) beserta smart button terintegrasi.",
@@ -453,6 +466,8 @@ const CONTENT: Record<Language, LocalizedContent> = {
           category: "Manufacturing ERP",
           description:
             "Suite modul Odoo 18 untuk digitalisasi proses produksi manufaktur komponen otomotif—meliputi penjadwalan loading per shift, generasi kartu E-Kanban berbasis QR, verifikasi jalur produksi, serta pelacakan kualitas & rework.",
+          impact:
+            "Mencegah crash parsing XML view di Odoo 18 serta menjaga konsistensi data loading antar-shift lewat pembersihan baris nol otomatis.",
           contributions: [
             "Menambahkan defensive fallback untuk workbook_variant dan mekanisme auto-assign pada master data modul E-Kanban.",
             "Mengoptimalkan proses kanban loading (load_masters) dengan pembatasan sampel sirkuit, nilai default quantity, serta pembersihan otomatis baris bernilai nol saat verifikasi.",
@@ -666,6 +681,8 @@ const CONTENT: Record<Language, LocalizedContent> = {
       contributionsCountLabel: "Contributions",
       deploymentLabel: "Deployment",
       contributionsTitle: "My Contributions",
+      impactLabel: "Impact",
+      impactTitle: "Outcome & Business Impact",
       keyFeaturesTitle: "Key Features",
       detailsBtn: "Details →",
       contributionsSuffix: "Contributions",
@@ -677,6 +694,8 @@ const CONTENT: Record<Language, LocalizedContent> = {
           category: "Healthcare ERP",
           description:
             "Custom Odoo ERP suite digitizing dental clinic operations—covering appointment reservations, real-time doctor scheduling, digital dental prescriptions & treatment templates, automated reminders, and billing integration.",
+          impact:
+            "Accelerated dental prescription entry via reusable templates and reduced missed appointments through automated activity-feed reminders.",
           contributions: [
             "Built the Prescriptions Template feature in configuration settings and automated treatment population inside dental prescription records based on selected templates.",
             "Added configurable Reminder Time options and automated appointment reminder notifications feeding directly into Odoo's activity feed.",
@@ -708,6 +727,8 @@ const CONTENT: Record<Language, LocalizedContent> = {
           category: "GovTech & Tax ERP",
           description:
             "Odoo 17-based regional tax management platform handling SPTPD tax filings, payment billing code generation, e-tax transaction tracking, and official QWeb PDF tax report printing.",
+          impact:
+            "Ensured official Hotel & Restaurant SPTPD printouts, NPWPD formats, and billing codes match latest municipal physical form standards.",
           contributions: [
             "Updated the QWeb PDF templates for Hotel Tax and Restaurant Tax SPTPD reports to match the latest official physical government forms.",
             "Refined full-row room detail tables, form alignments, and fallback table rendering for dynamic PDF reports.",
@@ -738,6 +759,8 @@ const CONTENT: Record<Language, LocalizedContent> = {
           category: "GovTech & Security",
           description:
             "Odoo 17 regional revenue system managing tax filing lifecycles, taxpayer data revision requests, overpayment/underpayment assessment corrections, and strict role-based access control.",
+          impact:
+            "Simplified tax revision audits via automated before/after diff tracking and blocked unauthorized overpayment/underpayment edits with strict ACLs.",
           contributions: [
             "Built automated field-level diff tracking to detect and display exact before/after changes on taxpayer data revision requests.",
             "Standardized tax period formatting to MM/YYYY and improved revision comparison form displays.",
@@ -768,6 +791,8 @@ const CONTENT: Record<Language, LocalizedContent> = {
           category: "GovTech & Analytics",
           description:
             "Next-gen Odoo 18 regional revenue ERP covering taxes, retributions, opsen targets, tax objection & assessment cancellation workflows, and multi-page PDF/Excel financial reporting.",
+          impact:
+            "Digitized end-to-end tax objection and cancellation approvals while hardening production security by hiding raw error tracebacks from non-admins.",
           contributions: [
             "Developed the Tax Objection workflow across PBJT, Mineral, Swiftlet, Billboard, and Groundwater sectors—including SKPDKB/SKPDKBT objections, multi-select objection items, auto SK numbering, and multi-level approval.",
             "Implemented Tax Assessment Cancellation features (SPTPD/SKPD, SKPDKB, SKPDKBT, SKPDLB) with integrated smart buttons.",
@@ -799,6 +824,8 @@ const CONTENT: Record<Language, LocalizedContent> = {
           category: "Manufacturing ERP",
           description:
             "Odoo 18 manufacturing module suite digitizing automotive wire-harness production—covering shift-based loading schedules, QR-coded E-Kanban card generation, line verification, and quality/rework tracking.",
+          impact:
+            "Eliminated Odoo 18 XML view parsing crashes and shift loading inconsistencies via automated zero-row cleanup and master data fallbacks.",
           contributions: [
             "Added defensive fallbacks for workbook_variant and automatic master-data assignment in the E-Kanban module.",
             "Optimized kanban loading (load_masters) by scoping sample circuits, setting default quantities, and auto-unlinking zero-qty lines upon verification.",

@@ -10,7 +10,8 @@ import {
   Cpu, 
   Terminal, 
   Sparkles,
-  Lock
+  Lock,
+  TrendingUp
 } from "lucide-react";
 import { PORTFOLIO_DATA, getLocalizedContent } from "@/data/portfolio";
 import { useLanguage } from "@/context/LanguageContext";
@@ -221,8 +222,19 @@ export default function PortfolioShowcase() {
                     </div>
                   </div>
 
-                  {/* Right Column: Contributions & Key Features */}
+                  {/* Right Column: Impact, Contributions & Key Features */}
                   <div className="lg:col-span-5 space-y-6">
+                    {/* Outcome & Impact Highlight Card */}
+                    <div className="p-5 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/20 border border-emerald-200/90 dark:border-emerald-500/30 space-y-2.5">
+                      <h4 className="text-sm font-mono uppercase tracking-wider font-bold text-emerald-900 dark:text-emerald-300 flex items-center gap-2">
+                        <TrendingUp className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                        {t.portfolio.impactTitle}
+                      </h4>
+                      <p className="text-xs sm:text-sm text-emerald-950/90 dark:text-emerald-100/90 leading-relaxed font-medium">
+                        {selectedProject.impact}
+                      </p>
+                    </div>
+
                     {/* My Contributions Card */}
                     <div className="p-6 rounded-2xl bg-purple-50/70 dark:bg-purple-950/15 border border-purple-200/80 dark:border-purple-500/30 space-y-4">
                       <h4 className="text-sm font-mono uppercase tracking-wider font-bold text-purple-900 dark:text-purple-200 flex items-center gap-2">
@@ -311,6 +323,14 @@ export default function PortfolioShowcase() {
                         <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mt-3 line-clamp-2 leading-relaxed">
                           {project.description}
                         </p>
+
+                        <div className="mt-4 p-3 rounded-xl bg-emerald-50/80 dark:bg-emerald-950/20 border border-emerald-200/80 dark:border-emerald-500/25 flex items-start gap-2">
+                          <TrendingUp className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                          <p className="text-[11px] sm:text-xs text-emerald-900 dark:text-emerald-200 leading-snug line-clamp-2">
+                            <span className="font-mono font-bold uppercase mr-1">{t.portfolio.impactLabel}:</span>
+                            {project.impact}
+                          </p>
+                        </div>
                       </div>
                     </div>
 
